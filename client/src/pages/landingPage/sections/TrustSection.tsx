@@ -8,7 +8,9 @@ export const TrustSection = () => (
       <SectionTitle title="Нам доверяют" subtitle="Крупные компании и государственные организации" />
       <div className={style.trust__logos}>
         {TRUST_LOGOS.map((logo) => (
-          <span key={logo} className={style.trust__logo}>{logo}</span>
+          <div key={logo.name} className={style.trust__logo}>
+            <img src={logo.src} alt={logo.name} loading="lazy" />
+          </div>
         ))}
       </div>
       <div className={style.trust__stats}>
