@@ -1,0 +1,19 @@
+import { WHY_NAFI } from '@/data/landingData'
+import { SectionTitle } from '@/components/ui/SectionTitle'
+import style from '@/pages/landingPage/landingPage.module.scss'
+
+export const WhyNafiSection = () => (
+  <section className="section">
+    <div className="container">
+      <SectionTitle title="Почему выбирают НАФИ" />
+      <div className={style.why__grid}>
+        {WHY_NAFI.map((item) => (
+          <div key={item.title} className={style.why__card}>
+            <h3>{item.title}</h3>
+            <p>{item.text}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+)
