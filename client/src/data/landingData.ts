@@ -21,13 +21,13 @@ export const HERO_SCENARIOS = [
   'Интеграция с HR / LMS / аттестацией',
 ]
 
-export const TRUST_LOGOS = [
-  'КРАСЦВЕТМЕТ',
-  'СКФ',
-  'СБЕР',
-  'Почта России',
-  'АВВ',
-  'Сеченовский университет',
+export const TRUST_LOGOS: { name: string; src: string }[] = [
+  { name: 'КРАСЦВЕТМЕТ', src: '/krascvetmet.svg' },
+  { name: 'СКФ', src: '/skf.svg' },
+  { name: 'СБЕР', src: '/sber.svg' },
+  { name: 'Почта России', src: '/pochta-rossii.svg' },
+  { name: 'ABB', src: '/abb.svg' },
+  { name: 'Сеченовский университет', src: '/sechenov.svg' },
 ]
 
 export const TRUST_STATS = [
