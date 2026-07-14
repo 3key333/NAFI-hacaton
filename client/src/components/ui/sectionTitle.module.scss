@@ -1,0 +1,28 @@
+.title {
+  margin-bottom: 40px;
+
+  &--center {
+    text-align: center;
+
+    p {
+      margin: 0 auto;
+    }
+  }
+
+  h2 {
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--color-text);
+    margin-bottom: 12px;
+
+    @media (max-width: 768px) {
+      font-size: 24px;
+    }
+  }
+
+  p {
+    font-size: 16px;
+    color: var(--color-text-muted);
+    max-width: 640px;
+  }
+}

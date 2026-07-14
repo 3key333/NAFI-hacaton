@@ -1,0 +1,110 @@
+.panel {
+  background: var(--color-white);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: var(--shadow);
+
+  &--compact {
+    .panel__options {
+      display: none;
+    }
+  }
+
+  &__field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 16px;
+
+    label {
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    input,
+    select {
+      padding: 12px 14px;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius);
+      font-size: 14px;
+      outline: none;
+
+      &:focus {
+        border-color: var(--color-dark);
+      }
+    }
+  }
+
+  &__countInput {
+    appearance: none;
+  }
+
+  &__options {
+    margin-bottom: 16px;
+  }
+
+  &__optionsTitle {
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+
+  &__checkbox {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 0;
+    font-size: 14px;
+    cursor: pointer;
+
+    input {
+      accent-color: var(--color-primary);
+    }
+  }
+
+  &__base {
+    margin-bottom: 16px;
+    padding: 12px;
+    background: var(--color-primary-light);
+    border-radius: var(--radius);
+    font-size: 13px;
+
+    p {
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    ul {
+      padding-left: 18px;
+      color: var(--color-text-muted);
+    }
+
+    li {
+      margin-bottom: 4px;
+    }
+  }
+
+  &__price {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding-top: 16px;
+    border-top: 1px solid var(--color-border);
+
+    span {
+      font-size: 13px;
+      color: var(--color-text-muted);
+    }
+
+    strong {
+      font-size: 24px;
+      color: var(--color-dark);
+    }
+
+    p {
+      font-size: 12px;
+      color: var(--color-text-muted);
+    }
+  }
+}
