@@ -374,8 +374,8 @@
   }
 
   &__content {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    display: flex;
+    justify-content: space-around;
     gap: 20px;
     background: var(--color-white);
     border: 1px solid var(--color-border);
@@ -383,7 +383,7 @@
     padding: 24px;
 
     @media (max-width: 768px) {
-      grid-template-columns: 1fr;
+      display: block;
     }
 
     h4 {
@@ -591,6 +591,7 @@
     padding: 20px;
     min-height: 180px;
     overflow: hidden;
+    transition: all 0.3s ease;
     cursor: default;
 
     h3 {
@@ -611,12 +612,14 @@
     &:hover {
       .competencies__front {
         opacity: 0;
-        transform: translateY(-8px);
+        // transform: translateY(-8px);
+        transform: scale(0);
       }
 
       .competencies__back {
         opacity: 1;
-        transform: translateY(0);
+        // transform: translateY(0);
+        transform: scale(1);
       }
     }
   }

@@ -43,18 +43,13 @@ export const AudienceSection = ({ onConsultation }: AudienceSectionProps) => {
 
         <div className={style.audience__content}>
           <div>
-            <h4>Боли</h4>
+            <h4>Типичные задачи</h4>
             <ul>{audience.pains.map((p) => <li key={p}>{p}</li>)}</ul>
           </div>
 
           <div>
             <h4>Что получите</h4>
             <ul>{audience.benefits.map((b) => <li key={b}>{b}</li>)}</ul>
-          </div>
-
-          <div>
-            <h4>Кейс</h4>
-            <p>{audience.caseText}</p>
           </div>
         </div>
 
