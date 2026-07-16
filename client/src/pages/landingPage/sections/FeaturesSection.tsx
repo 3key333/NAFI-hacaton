@@ -21,7 +21,7 @@ export const FeaturesSection = () => {
         </div>
 
         <div className={style.features__mockLk}>
-          <h3>Mock личного кабинета администратора</h3>
+          <h3>Панель управления и аналитики</h3>
           <div className={style.features__mockTabs} role="tablist" aria-label="Вкладки личного кабинета">
             {MOCK_LK_TABS.map((tab) => (
               <button

@@ -1,5 +1,11 @@
 import { useState } from 'react'
-import { AUDIENCE_LABELS, CONNECTION_OPTIONS, MAX_USER_COUNT, MIN_USER_COUNT } from '@/config/connectionConfig'
+import {
+  AUDIENCE_LABELS,
+  CONNECTION_OPTIONS,
+  COUNT_PRESETS,
+  MAX_USER_COUNT,
+  MIN_USER_COUNT,
+} from '@/config/connectionConfig'
 import { BASE_FEATURES } from '@/data/landingData'
 import { calculatePrice, formatPrice } from '@/helpers/priceCalculator'
 import { useConnection } from '@/redux/hooks/useConnection'
@@ -61,6 +67,12 @@ export const ConfiguratorPanel = ({ compact = false, showBase = false }: Configu
     setIsCountFocused(false)
   }
 
+  const handlePresetClick = (preset: number) => {
+    setCount(preset)
+    setCountInput(String(preset))
+    setIsCountFocused(false)
+  }
+
   return (
     <div className={`${style.panel} ${compact ? style['panel--compact'] : ''}`}>
       <div className={style.panel__field}>
@@ -75,6 +87,18 @@ export const ConfiguratorPanel = ({ compact = false, showBase = false }: Configu
           onBlur={handleCountBlur}
           className={style.panel__countInput}
         />
+        <div className={style.panel__presets} role="group" aria-label="Быстрый выбор количества">
+          {COUNT_PRESETS.map((preset) => (
+            <button
+              key={preset}
+              type="button"
+              className={`${style.panel__preset} ${config.count === preset ? style['panel__preset--active'] : ''}`}
+              onClick={() => handlePresetClick(preset)}
+            >
+              {preset}
+            </button>
+          ))}
+        </div>
       </div>
 
       <div className={style.panel__field}>

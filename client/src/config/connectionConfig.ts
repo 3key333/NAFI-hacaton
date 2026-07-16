@@ -68,6 +68,7 @@ export const DEFAULT_CONNECTION_CONFIG: ConnectionConfig = {
 
 export const MIN_USER_COUNT = 10
 export const MAX_USER_COUNT = 100_000
+export const COUNT_PRESETS = [50, 100, 500, 1000] as const
 
 export const DEFAULT_PAYER_TYPE: PayerType = 'legal'
 export const DEFAULT_PAYMENT_METHOD: PaymentMethod = 'invoice'
