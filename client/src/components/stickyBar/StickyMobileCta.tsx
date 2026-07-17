@@ -10,7 +10,7 @@ export const StickyMobileCta = () => {
   return (
     <div className={style.sticky}>
       <div className={style.sticky__price}>
-        <span>от</span>
+        <span>Итого</span>
         <strong>{formatPrice(price.total)}</strong>
       </div>
       <Button onClick={openWizard}>Подключить</Button>

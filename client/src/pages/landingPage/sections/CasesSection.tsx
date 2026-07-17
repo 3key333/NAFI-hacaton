@@ -9,7 +9,7 @@ export const CasesSection = () => (
       <div className={style.cases__grid}>
         {CASES.map((item) => (
           <div key={item.org} className={style.cases__card}>
-            <h3>{item.org}</h3>
+            <a href={`${item.src}`} target='_blank'>{item.org}</a>
             <p>{item.count}</p>
             <strong>{item.result}</strong>
           </div>

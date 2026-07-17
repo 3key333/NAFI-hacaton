@@ -136,4 +136,11 @@
       color: var(--color-text-muted);
     }
   }
+
+  &__cta {
+    width: 100%;
+    margin-top: 16px;
+    font-family: inherit;
+    white-space: normal;
+  }
 }

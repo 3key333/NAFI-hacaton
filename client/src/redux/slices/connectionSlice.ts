@@ -3,7 +3,6 @@ import {
   AUDIENCE_RECOMMENDED_OPTIONS,
   DEFAULT_CONNECTION_CONFIG,
   DEFAULT_CONNECTION_FORM,
-  DEFAULT_CONNECTION_OPTIONS,
   DEFAULT_PAYER_TYPE,
   DEFAULT_PAYMENT_METHOD,
   MAX_USER_COUNT,
@@ -42,7 +41,7 @@ interface ConnectionState {
 const initialState: ConnectionState = {
   config: {
     ...DEFAULT_CONNECTION_CONFIG,
-    options: { ...DEFAULT_CONNECTION_OPTIONS },
+    options: { ...DEFAULT_CONNECTION_CONFIG.options },
   },
   form: { ...DEFAULT_CONNECTION_FORM },
   payerType: DEFAULT_PAYER_TYPE,
