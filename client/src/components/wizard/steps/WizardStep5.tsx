@@ -1,47 +1,25 @@
-import type { ConnectionConfig, PriceBreakdown } from '@/types'
-import { formatPrice } from '@/helpers/priceCalculator'
+import { Button } from '@/components/ui/Button'
 import style from '@/components/wizard/wizard.module.scss'
 
 interface WizardStep5Props {
-  config: ConnectionConfig
-  price: PriceBreakdown
-  contractAccepted: boolean
-  errors: Record<string, string>
-  onContractChange: (accepted: boolean) => void
+  email: string
+  onReset: () => void
 }
 
-export const WizardStep5 = ({
-  config,
-  price,
-  contractAccepted,
-  errors,
-  onContractChange,
-}: WizardStep5Props) => (
-  <div className={style.step}>
-    <h3>Шаг 5 — Лицензионный договор</h3>
-    <div className={style.contract}>
-      <p><strong>ЛИЦЕНЗИОННЫЙ ДОГОВОР (mock)</strong></p>
-      <p>
-        Настоящий договор заключается между ООО «НАФИ» (Лицензиар) и Заказчиком (Лиценсиат) на
-        предоставление неисключительной лицензии на использование платформы «Цифровой гражданин».
-      </p>
-      <p>
-        1. Предмет договора — доступ к платформе для оценки цифровых компетенций в количестве{' '}
-        {config.count} пользователей.
-      </p>
-      <p>2. Срок действия лицензии — 12 месяцев с момента оплаты.</p>
-      <p>3. Стоимость лицензии — {formatPrice(price.total)}.</p>
-      <p>4. Лицензиат обязуется использовать платформу в соответствии с пользовательским соглашением.</p>
-      <p>5. Обработка персональных данных осуществляется в соответствии с ФЗ-152.</p>
+export const WizardStep5 = ({ email, onReset }: WizardStep5Props) => (
+  <div className={`${style.step} ${style.success}`}>
+    <div className={style.successIcon}>✓</div>
+    <h3>Платформа успешно подключена!</h3>
+    <p>Доступ к платформе будет отправлен на {email}</p>
+    <ul>
+      <li>Проверьте почту — письмо с инструкциями</li>
+      <li>Войдите в личный кабинет администратора</li>
+      <li>Настройте тестирование для сотрудников</li>
+    </ul>
+    <div className={style.successDocs}>
+      <span>📄 Лицензионный договор.pdf</span>
+      <span>📄 Счёт на оплату.pdf</span>
     </div>
-    <label className={style.checkbox}>
-      <input
-        type="checkbox"
-        checked={contractAccepted}
-        onChange={(e) => onContractChange(e.target.checked)}
-      />
-      <span>Ознакомлен и принимаю условия договора</span>
-    </label>
-    {errors.contract && <span className={style.errorText}>{errors.contract}</span>}
+    <Button onClick={onReset}>Подключить ещё</Button>
   </div>
 )

@@ -22,7 +22,7 @@ export const Header = ({ onConsultation }: HeaderProps) => {
     <header className={style.header}>
       <div className={`container ${style.header__inner}`}>
         <a href="#" className={style.header__logo} onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }) }}>
-          <span className={style.header__logoMark}>ЦГ</span>
+          <img src="/city.svg" alt="Цифровой гражданин" className={style.header__logoImg} />
           <span>Цифровой гражданин</span>
         </a>
 
@@ -49,7 +49,11 @@ export const Header = ({ onConsultation }: HeaderProps) => {
           {NAV_LINKS.map((link) => (
             <button key={link.href} onClick={() => handleNav(link.href)}>{link.label}</button>
           ))}
-          <Button variant="secondary" onClick={() => { setMenuOpen(false); onConsultation() }}>
+          <Button
+            variant="secondary"
+            className={style.header__mobileBtn}
+            onClick={() => { setMenuOpen(false); onConsultation() }}
+          >
             Получить консультацию
           </Button>
         </div>

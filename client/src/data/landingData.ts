@@ -21,19 +21,18 @@ export const HERO_SCENARIOS = [
   'Интеграция с HR / LMS / аттестацией',
 ]
 
-export const TRUST_LOGOS: { name: string; src: string }[] = [
-  { name: 'КРАСЦВЕТМЕТ', src: '/krascvetmet.svg' },
-  { name: 'СКФ', src: '/skf.svg' },
-  { name: 'СБЕР', src: '/sber.svg' },
-  { name: 'Почта России', src: '/pochta-rossii.svg' },
-  { name: 'ABB', src: '/abb.svg' },
-  { name: 'Сеченовский университет', src: '/sechenov.svg' },
+export const TRUST_LOGOS: { name: string; src?: string }[] = [
+  { name: 'Красцветмет', src: '/krascvetmet.png' },
+  { name: 'СКФ', src: '/SKF.png' },
+  { name: 'Сбер', src: '/sber.png' },
+  { name: 'Почта России', src: '/pochta-rossii.png' },
+  { name: 'Сеченовский университет', src: '/SECH_y.png' },
 ]
 
 export const TRUST_STATS = [
-  { value: 'С 2018 г.', label: 'на рынке' },
-  { value: '50 000+', label: 'пользователей' },
-  { value: '1 000+', label: 'вопросов' },
+  { value: 'С 2018 г.', label: 'платформа на рынке' },
+  { value: '50 000+', label: 'сотрудников компаний и госструктур' },
+  { value: '1 000+', label: 'тестовых вопросов' },
   { value: '10% / квартал', label: 'обновление вопросов' },
 ]
 
@@ -57,10 +56,8 @@ export const BENEFITS = [
 ]
 
 export const WIZARD_STEPS = [
-  'Параметры',
-  'Стоимость',
-  'Плательщик',
-  'Данные',
+  'Параметры + стоимость',
+  'Плательщик + данные',
   'Договор',
   'Оплата',
   'Готово',
@@ -170,10 +167,10 @@ export const COMPETENCIES = [
 ]
 
 export const CASES = [
-  { org: 'Счётная палата', count: '2 000 чел.', result: '65% → 72%' },
-  { org: 'Совкомфлот', count: '500 чел.', result: '66% → 78%, отзывы 95%' },
-  { org: 'Росатом', count: '8 000+', result: 'Рост грамотности +25%' },
-  { org: 'Сеченовский', count: '3 000+', result: '5 групп с траекториями' },
+  { org: 'Счётная палата', count: '2 000 чел. | Госорганы', result: '65% → 72%', src: '#'},
+  { org: 'Совкомфлот', count: '500 чел. | Крупный бизнес', result: '66% → 78%, отзывы 95%', src: 'https://nafi.ru/about/clients/4169/'},
+  { org: 'Росатом', count: '8 000 чел. | Крупный бизнес', result: 'Рост грамотности +25%', src: 'https://nafi.ru/about/clients/4167/'},
+  { org: 'Сеченовский', count: '3 000 чел. | Образование', result: '5 групп с траекториями', src: 'https://nafi.ru/about/clients/4170/'},
 ]
 
 export const FAQ_ITEMS = [

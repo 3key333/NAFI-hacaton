@@ -5,8 +5,10 @@
   gap: 8px;
   padding: 14px 28px;
   border-radius: var(--radius);
+  font-family: inherit;
   font-size: 15px;
   font-weight: 600;
+  line-height: 1.2;
   transition: background 0.2s, color 0.2s, border-color 0.2s;
   white-space: nowrap;
 

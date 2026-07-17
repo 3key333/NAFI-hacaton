@@ -1,5 +1,12 @@
-import { useState } from 'react'
-import { AUDIENCE_LABELS, CONNECTION_OPTIONS, MAX_USER_COUNT, MIN_USER_COUNT } from '@/config/connectionConfig'
+import { useEffect, useState } from 'react'
+import {
+  AUDIENCE_LABELS,
+  CONNECTION_OPTIONS,
+  COUNT_PRESETS,
+  MAX_USER_COUNT,
+  MIN_USER_COUNT,
+} from '@/config/connectionConfig'
+import { Button } from '@/components/ui/Button'
 import { BASE_FEATURES } from '@/data/landingData'
 import { calculatePrice, formatPrice } from '@/helpers/priceCalculator'
 import { useConnection } from '@/redux/hooks/useConnection'
@@ -21,9 +28,15 @@ const getDisplayCount = (countInput: string, configCount: number) => {
 }
 
 export const ConfiguratorPanel = ({ compact = false, showBase = false }: ConfiguratorPanelProps) => {
-  const { config, setCount, setAudience, toggleOption } = useConnection()
+  const { config, setCount, setAudienceWithRecommendations, toggleOption, openWizard } = useConnection()
   const [countInput, setCountInput] = useState(String(config.count))
   const [isCountFocused, setIsCountFocused] = useState(false)
+
+  useEffect(() => {
+    if (!isCountFocused) {
+      setCountInput(String(config.count))
+    }
+  }, [config.count, isCountFocused])
 
   const displayValue = isCountFocused ? countInput : String(config.count)
   const displayCount = getDisplayCount(isCountFocused ? countInput : String(config.count), config.count)
@@ -61,6 +74,12 @@ export const ConfiguratorPanel = ({ compact = false, showBase = false }: Configu
     setIsCountFocused(false)
   }
 
+  const handlePresetClick = (preset: number) => {
+    setCount(preset)
+    setCountInput(String(preset))
+    setIsCountFocused(false)
+  }
+
   return (
     <div className={`${style.panel} ${compact ? style['panel--compact'] : ''}`}>
       <div className={style.panel__field}>
@@ -75,11 +94,26 @@ export const ConfiguratorPanel = ({ compact = false, showBase = false }: Configu
           onBlur={handleCountBlur}
           className={style.panel__countInput}
         />
+        <div className={style.panel__presets} role="group" aria-label="Быстрый выбор количества">
+          {COUNT_PRESETS.map((preset) => (
+            <button
+              key={preset}
+              type="button"
+              className={`${style.panel__preset} ${config.count === preset ? style['panel__preset--active'] : ''}`}
+              onClick={() => handlePresetClick(preset)}
+            >
+              {preset}
+            </button>
+          ))}
+        </div>
       </div>
 
       <div className={style.panel__field}>
         <label>Тип организации</label>
-        <select value={config.audience} onChange={(e) => setAudience(e.target.value as typeof config.audience)}>
+        <select
+          value={config.audience}
+          onChange={(e) => setAudienceWithRecommendations(e.target.value as typeof config.audience)}
+        >
           {Object.entries(AUDIENCE_LABELS).map(([key, label]) => (
             <option key={key} value={key}>{label}</option>
           ))}
@@ -118,6 +152,12 @@ export const ConfiguratorPanel = ({ compact = false, showBase = false }: Configu
         <strong>{formatPrice(price.total)}</strong>
         <p>{displayCount} × {formatPrice(price.pricePerUser)} · без НДС</p>
       </div>
+
+      {compact && (
+        <Button className={style.panel__cta} onClick={openWizard}>
+          Перейти к конфигуратору
+        </Button>
+      )}
     </div>
   )
 }

@@ -44,6 +44,13 @@ export const useConnection = () => {
     wizardResetVersion,
   } = useAppSelector((state) => state.connection)
 
+  const openWizard = () => {
+    if (wizardStep === 5) {
+      dispatch(resetWizardAction())
+    }
+    scrollToWizard()
+  }
+
   return {
     config,
     form,
@@ -65,7 +72,7 @@ export const useConnection = () => {
     setPaymentMethod: (method: PaymentMethod) => dispatch(setPaymentMethodAction(method)),
     setWizardStep: (step: WizardStep) => dispatch(setWizardStepAction(step)),
     setContractAccepted: (value: boolean) => dispatch(setContractAcceptedAction(value)),
-    openWizard: scrollToWizard,
+    openWizard,
     resetWizard: () => dispatch(resetWizardAction()),
   }
 }
