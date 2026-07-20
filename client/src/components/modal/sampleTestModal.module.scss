@@ -109,7 +109,7 @@
     font-size: 15px;
     line-height: 1.45;
     color: var(--color-text);
-    -webkit-text-fill-color: var(--color-text);
+    -webkit-text-fill-color: currentColor;
     -webkit-appearance: none;
     appearance: none;
     transition: border-color 0.2s, background 0.2s;
