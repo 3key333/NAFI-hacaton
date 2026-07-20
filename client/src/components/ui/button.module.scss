@@ -13,6 +13,7 @@
   white-space: nowrap;
   -webkit-appearance: none;
   appearance: none;
+  -webkit-text-fill-color: currentColor;
 
   &:disabled {
     opacity: 0.5;
@@ -22,7 +23,6 @@
   &--primary {
     background: var(--color-primary);
     color: var(--color-black);
-    -webkit-text-fill-color: var(--color-black);
 
     &:hover:not(:disabled) {
       background: var(--color-primary-dark);
@@ -32,7 +32,6 @@
   &--secondary {
     background: var(--color-white);
     color: var(--color-dark);
-    -webkit-text-fill-color: var(--color-dark);
     border: 2px solid var(--color-dark);
 
     &:hover:not(:disabled) {
@@ -43,7 +42,6 @@
   &--ghost {
     background: transparent;
     color: var(--color-dark);
-    -webkit-text-fill-color: var(--color-dark);
     padding: 10px 16px;
 
     &:hover:not(:disabled) {
