@@ -4,7 +4,7 @@ export type PayerType = 'individual' | 'ip' | 'legal'
 
 export type PaymentMethod = 'card' | 'invoice'
 
-export type WizardStep = 1 | 2 | 3 | 4 | 5 | 6 | 7
+export type WizardStep = 1 | 2 | 3 | 4 | 5
 
 export interface ConnectionOptions {
   certificates: boolean

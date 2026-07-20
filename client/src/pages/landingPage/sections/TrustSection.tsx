@@ -9,7 +9,11 @@ export const TrustSection = () => (
       <div className={style.trust__logos}>
         {TRUST_LOGOS.map((logo) => (
           <div key={logo.name} className={style.trust__logo}>
-            <img src={logo.src} alt={logo.name} loading="lazy" />
+            {logo.src ? (
+              <img src={logo.src} alt={logo.name} loading="lazy" />
+            ) : (
+              <span>{logo.name}</span>
+            )}
           </div>
         ))}
       </div>

@@ -5,9 +5,8 @@ import { WizardStep2 } from '@/components/wizard/steps/WizardStep2'
 import { WizardStep3 } from '@/components/wizard/steps/WizardStep3'
 import { WizardStep4 } from '@/components/wizard/steps/WizardStep4'
 import { WizardStep5 } from '@/components/wizard/steps/WizardStep5'
-import { WizardStep6 } from '@/components/wizard/steps/WizardStep6'
-import { WizardStep7 } from '@/components/wizard/steps/WizardStep7'
-import { WIZARD_STEPS } from '@/data/landingData'
+import { AUDIENCE_LABELS, CONNECTION_OPTIONS } from '@/config/connectionConfig'
+import { BASE_FEATURES, WIZARD_STEPS } from '@/data/landingData'
 import { calculatePrice, formatPrice } from '@/helpers/priceCalculator'
 import { validateConnectionForm } from '@/helpers/validateForm'
 import { useConnection } from '@/redux/hooks/useConnection'
@@ -17,6 +16,8 @@ import style from './wizard.module.scss'
 interface WizardProps {
   onConsultation: () => void
 }
+
+const TOTAL_STEPS = 5
 
 export const Wizard = ({ onConsultation }: WizardProps) => {
   const {
@@ -36,6 +37,7 @@ export const Wizard = ({ onConsultation }: WizardProps) => {
 
   const [errors, setErrors] = useState<Record<string, string>>({})
   const price = calculatePrice(config)
+  const selectedOptions = CONNECTION_OPTIONS.filter((opt) => config.options[opt.key])
 
   const handleWizardReset = () => {
     setErrors({})
@@ -62,7 +64,7 @@ export const Wizard = ({ onConsultation }: WizardProps) => {
   }
 
   const nextStep = () => {
-    if (wizardStep === 4) {
+    if (wizardStep === 2) {
       const validation = validateConnectionForm(form)
       if (Object.keys(validation).length) {
         setErrors(validation)
@@ -70,12 +72,12 @@ export const Wizard = ({ onConsultation }: WizardProps) => {
       }
       setErrors({})
     }
-    if (wizardStep === 5 && !contractAccepted) {
+    if (wizardStep === 3 && !contractAccepted) {
       setErrors({ contract: 'Необходимо принять условия договора' })
       return
     }
     setErrors({})
-    if (wizardStep < 7) setWizardStep((wizardStep + 1) as WizardStep)
+    if (wizardStep < TOTAL_STEPS) setWizardStep((wizardStep + 1) as WizardStep)
   }
 
   const prevStep = () => {
@@ -85,26 +87,30 @@ export const Wizard = ({ onConsultation }: WizardProps) => {
     }
   }
 
+  const goToStep = (step: number) => {
+    if (step < 1 || step > wizardStep) return
+    setWizardStep(step as WizardStep)
+    setErrors({})
+  }
+
   const renderStep = () => {
     switch (wizardStep) {
       case 1:
-        return <WizardStep1 />
+        return <WizardStep1 config={config} price={price} />
       case 2:
-        return <WizardStep2 config={config} price={price} />
-      case 3:
-        return <WizardStep3 payerType={payerType} onPayerTypeChange={setPayerType} />
-      case 4:
         return (
-          <WizardStep4
+          <WizardStep2
+            payerType={payerType}
             form={form}
             errors={errors}
+            onPayerTypeChange={setPayerType}
             onUpdateField={updateFormField}
             onSetField={setFormField}
           />
         )
-      case 5:
+      case 3:
         return (
-          <WizardStep5
+          <WizardStep3
             config={config}
             price={price}
             contractAccepted={contractAccepted}
@@ -112,21 +118,90 @@ export const Wizard = ({ onConsultation }: WizardProps) => {
             onContractChange={handleContractChange}
           />
         )
-      case 6:
+      case 4:
         return (
-          <WizardStep6
+          <WizardStep4
             payerType={payerType}
             paymentMethod={paymentMethod}
             price={price}
             onPaymentMethodChange={setPaymentMethod}
           />
         )
-      case 7:
-        return <WizardStep7 email={form.email} onReset={handleWizardReset} />
+      case 5:
+        return <WizardStep5 email={form.email} onReset={handleWizardReset} />
       default:
         return null
     }
   }
+
+  const renderSummary = (compact = false) => (
+    <div className={`${style.sidebarSummary} ${compact ? style['sidebarSummary--compact'] : ''}`}>
+      {!compact && (
+        <>
+          <div className={style.sidebarSummary__section}>
+            <p className={style.sidebarSummary__label}>Параметры</p>
+            <ul className={style.sidebarSummary__list}>
+              <li>{config.count} тестируемых</li>
+              <li>{AUDIENCE_LABELS[config.audience]}</li>
+            </ul>
+          </div>
+
+          {selectedOptions.length > 0 && (
+            <div className={style.sidebarSummary__section}>
+              <p className={style.sidebarSummary__label}>Опции</p>
+              <ul className={style.sidebarSummary__list}>
+                {selectedOptions.map((opt) => (
+                  <li key={opt.key}>{opt.label}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          <div className={style.sidebarSummary__section}>
+            <p className={style.sidebarSummary__label}>Что включено</p>
+            <ul className={style.sidebarSummary__list}>
+              {BASE_FEATURES.map((item) => (
+                <li key={item}>{item}</li>
+              ))}
+            </ul>
+          </div>
+        </>
+      )}
+
+      <div className={style.sidebarPrice}>
+        <span>Итого</span>
+        <strong>{formatPrice(price.total)}</strong>
+        {!compact && <p>{config.count} тестируемых</p>}
+      </div>
+    </div>
+  )
+
+  const renderNav = (variant: 'side' | 'mobile') => (
+    <nav
+      className={variant === 'side' ? style.wizard__nav : style.wizard__navMobile}
+      aria-label="Шаги подключения"
+    >
+      {WIZARD_STEPS.map((step, i) => {
+        const stepNum = i + 1
+        const isActive = stepNum <= wizardStep
+        const isCurrent = stepNum === wizardStep
+        const isClickable = stepNum <= wizardStep
+
+        return (
+          <button
+            key={step}
+            type="button"
+            disabled={!isClickable}
+            onClick={() => goToStep(stepNum)}
+            className={`${style.progressStep} ${isActive ? style['progressStep--active'] : ''} ${isCurrent ? style['progressStep--current'] : ''} ${isClickable ? style['progressStep--clickable'] : ''}`}
+          >
+            <span>{stepNum}</span>
+            <p>{step}</p>
+          </button>
+        )
+      })}
+    </nav>
+  )
 
   return (
     <section id="wizard" className={style.wizard}>
@@ -136,45 +211,25 @@ export const Wizard = ({ onConsultation }: WizardProps) => {
           <p>Выберите параметры, оформите подключение и получите доступ к платформе</p>
         </div>
 
-        <div className={style.wizard__progress}>
-          {WIZARD_STEPS.map((step, i) => (
-            <div
-              key={step}
-              className={`${style.progressStep} ${i + 1 <= wizardStep ? style['progressStep--active'] : ''} ${i + 1 === wizardStep ? style['progressStep--current'] : ''}`}
-            >
-              <span>{i + 1}</span>
-              <p>{step}</p>
-            </div>
-          ))}
-        </div>
+        {wizardStep < TOTAL_STEPS && renderNav('mobile')}
 
-        <div className={style.wizard__body}>
+        <div className={`${style.wizard__body} ${wizardStep === TOTAL_STEPS ? style['wizard__body--success'] : ''}`}>
+          {wizardStep < TOTAL_STEPS && renderNav('side')}
+
           <div className={style.wizard__content}>{renderStep()}</div>
 
-          {wizardStep < 7 && (
+          {wizardStep < TOTAL_STEPS && (
             <>
-              <aside className={style.wizard__sidebar}>
-                <div className={style.sidebarPrice}>
-                  <span>Итого</span>
-                  <strong>{formatPrice(price.total)}</strong>
-                  <p>{config.count} тестируемых</p>
-                </div>
-              </aside>
-              <div className={style.wizard__mobilePrice}>
-                <div className={style.sidebarPrice}>
-                  <span>Итого</span>
-                  <strong>{formatPrice(price.total)}</strong>
-                  <p>{config.count} тестируемых</p>
-                </div>
-              </div>
+              <aside className={style.wizard__sidebar}>{renderSummary()}</aside>
+              <div className={style.wizard__mobilePrice}>{renderSummary(true)}</div>
             </>
           )}
         </div>
 
-        {wizardStep < 7 && (
+        {wizardStep < TOTAL_STEPS && (
           <div className={style.wizard__actions}>
             {wizardStep > 1 && <Button variant="secondary" onClick={prevStep}>Назад</Button>}
-            <Button onClick={nextStep}>{wizardStep === 6 ? 'Оплатить' : 'Далее'}</Button>
+            <Button onClick={nextStep}>{wizardStep === 4 ? 'Оплатить' : 'Далее'}</Button>
             <button className={style.consultLink} onClick={onConsultation}>
               Параметры не подходят? Получить консультацию
             </button>

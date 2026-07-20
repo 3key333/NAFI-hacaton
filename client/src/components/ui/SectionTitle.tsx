@@ -1,8 +1,9 @@
+import type { ReactNode } from 'react'
 import style from './sectionTitle.module.scss'
 
 interface SectionTitleProps {
   title: string
-  subtitle?: string
+  subtitle?: ReactNode
   center?: boolean
 }
 

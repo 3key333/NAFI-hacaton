@@ -52,14 +52,16 @@ export const HeroSection = ({ onConsultation }: HeroSectionProps) => {
 
           <div className={style.hero__actions}>
             <Button onClick={openWizard}>Подключить платформу</Button>
-            <Button variant="secondary" onClick={onConsultation}>Получить консультацию</Button>
+            <Button variant="secondary" className={style.hero__btnSecondary} onClick={onConsultation}>
+              Получить консультацию
+            </Button>
           </div>
         </div>
 
         <div className={style.hero__aside}>
           <ConfiguratorPanel compact />
           <div className={style.hero__mock}>
-            <p>Mock дашборда аналитики</p>
+            <p>Панель управления и аналитики</p>
             <div className={style.hero__mockBars}>
               <span style={{ height: '60%' }} />
               <span style={{ height: '85%' }} />
