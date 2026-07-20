@@ -47,6 +47,9 @@ button {
   cursor: pointer;
   border: none;
   background: none;
+  color: inherit;
+  -webkit-appearance: none;
+  appearance: none;
 }
 
 input,

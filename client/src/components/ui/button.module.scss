@@ -11,6 +11,9 @@
   line-height: 1.2;
   transition: background 0.2s, color 0.2s, border-color 0.2s;
   white-space: nowrap;
+  -webkit-appearance: none;
+  appearance: none;
+  -webkit-text-fill-color: currentColor;
 
   &:disabled {
     opacity: 0.5;
