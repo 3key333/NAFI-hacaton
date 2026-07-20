@@ -26,7 +26,7 @@ export const AudienceSection = ({ onConsultation }: AudienceSectionProps) => {
   return (
     <section className={`section section--alt ${style.audience}`}>
       <div className="container">
-        <SectionTitle title="Для кого" subtitle="Решение для разных типов организаций" />
+        <SectionTitle title="Кому подойдёт наше решение?" subtitle="Решение для разных типов организаций" />
 
         <div className={style.audience__tabs}>
           {AUDIENCE_TABS.map((tab) => (

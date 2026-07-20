@@ -1,4 +1,14 @@
 import type { AudienceType, ConnectionOptions } from '@/types'
+import chatIcon from '@/assets/competencies/chat-svgrepo-com.svg'
+import chatIconWhite from '@/assets/competencies/chat-svgrepo-com_white.svg'
+import fileLockedIcon from '@/assets/competencies/file-locked-svgrepo-com.svg'
+import fileLockedIconWhite from '@/assets/competencies/file-locked-svgrepo-com_white.svg'
+import lockIcon from '@/assets/competencies/lock-svgrepo-com.svg'
+import lockIconWhite from '@/assets/competencies/lock-svgrepo-com_white.svg'
+import listIcon from '@/assets/competencies/numbered-list-svgrepo-com.svg'
+import listIconWhite from '@/assets/competencies/numbered-list-svgrepo-com_white.svg'
+import paintIcon from '@/assets/competencies/paint-svgrepo-com.svg'
+import paintIconWhite from '@/assets/competencies/paint-svgrepo-com_white.svg'
 
 export const NAV_LINKS = [
   { label: 'Продукт', href: '#benefits' },
@@ -141,26 +151,36 @@ export const INTEGRATIONS = ['1С', 'SAP', 'Битрикс24', 'Moodle', 'API/SS
 export const COMPETENCIES = [
   {
     title: 'Информационная',
+    icon: fileLockedIcon,
+    iconHover: fileLockedIconWhite,
     skills: ['Поиск информации', 'Оценка информации', 'Управление контентом'],
     report: 'Уровень владения поиском и оценкой данных, рекомендации по базовым навыкам.',
   },
   {
     title: 'Коммуникативная',
+    icon: chatIcon,
+    iconHover: chatIconWhite,
     skills: ['Цифровые коммуникации', 'Совместная работа', 'Этикет в сети'],
     report: 'Показатели командной работы онлайн и соблюдения цифрового этикета.',
   },
   {
     title: 'Создание контента',
+    icon: paintIcon,
+    iconHover: paintIconWhite,
     skills: ['Редактирование контента', 'Авторские права', 'Настройка ПО'],
     report: 'Оценка навыков создания материалов и работы с инструментами.',
   },
   {
     title: 'Безопасность',
+    icon: lockIcon,
+    iconHover: lockIconWhite,
     skills: ['Защита данных', 'Киберграмотность', 'Безопасность устройств'],
     report: 'Группы риска по безопасности, рекомендации по обучению.',
   },
   {
     title: 'Решение задач',
+    icon: listIcon,
+    iconHover: listIconWhite,
     skills: ['Повседневные задачи', 'Знания об ИКТ', 'Саморазвитие'],
     report: 'Траектории развития и подбор материалов для роста компетенций.',
   },

@@ -31,6 +31,7 @@ export const ConfiguratorPanel = ({ compact = false, showBase = false }: Configu
   const { config, setCount, setAudienceWithRecommendations, toggleOption, openWizard } = useConnection()
   const [countInput, setCountInput] = useState(String(config.count))
   const [isCountFocused, setIsCountFocused] = useState(false)
+  const [isAudienceOpen, setIsAudienceOpen] = useState(false)
 
   useEffect(() => {
     if (!isCountFocused) {
@@ -112,7 +113,13 @@ export const ConfiguratorPanel = ({ compact = false, showBase = false }: Configu
         <label>Тип организации</label>
         <select
           value={config.audience}
-          onChange={(e) => setAudienceWithRecommendations(e.target.value as typeof config.audience)}
+          className={isAudienceOpen ? style['panel__select--open'] : undefined}
+          onClick={() => setIsAudienceOpen((open) => !open)}
+          onBlur={() => setIsAudienceOpen(false)}
+          onChange={(e) => {
+            setAudienceWithRecommendations(e.target.value as typeof config.audience)
+            setIsAudienceOpen(false)
+          }}
         >
           {Object.entries(AUDIENCE_LABELS).map(([key, label]) => (
             <option key={key} value={key}>{label}</option>
