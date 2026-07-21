@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Button } from '@/components/ui/Button'
 import { NAV_LINKS } from '@/data/landingData'
+import { scrollToSection } from '@/helpers/scrollToSection'
 import { useConnection } from '@/redux/hooks/useConnection'
 import style from './header.module.scss'
 
@@ -14,8 +15,7 @@ export const Header = ({ onConsultation }: HeaderProps) => {
 
   const handleNav = (href: string) => {
     setMenuOpen(false)
-    const id = href.replace('#', '')
-    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
+    scrollToSection(href.replace('#', ''))
   }
 
   return (

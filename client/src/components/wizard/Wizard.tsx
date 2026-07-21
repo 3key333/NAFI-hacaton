@@ -6,7 +6,7 @@ import { WizardStep3 } from '@/components/wizard/steps/WizardStep3'
 import { WizardStep4 } from '@/components/wizard/steps/WizardStep4'
 import { WizardStep5 } from '@/components/wizard/steps/WizardStep5'
 import { AUDIENCE_LABELS, CONNECTION_OPTIONS } from '@/config/connectionConfig'
-import { WIZARD_STEPS } from '@/data/landingData'
+import { BASE_FEATURES, WIZARD_STEPS } from '@/data/landingData'
 import { calculatePrice, formatPrice } from '@/helpers/priceCalculator'
 import { validateConnectionForm } from '@/helpers/validateForm'
 import { useConnection } from '@/redux/hooks/useConnection'
@@ -150,24 +150,37 @@ export const Wizard = ({ onConsultation }: WizardProps) => {
 
   const renderSummary = () => (
     <div className={style.sidebarSummary}>
-      <div className={style.sidebarSummary__section}>
-        <p className={style.sidebarSummary__label}>Параметры</p>
-        <ul className={style.sidebarSummary__list}>
-          <li>{config.count} тестируемых</li>
-          <li>{AUDIENCE_LABELS[config.audience]}</li>
-        </ul>
-      </div>
-
-      {selectedOptions.length > 0 && (
-        <div className={style.sidebarSummary__section}>
-          <p className={style.sidebarSummary__label}>Опции</p>
+      <ul className={style.sidebarSummary__cards}>
+        <li className={style.sidebarSummary__section}>
+          <p className={style.sidebarSummary__label}>Параметры</p>
           <ul className={style.sidebarSummary__list}>
-            {selectedOptions.map((opt) => (
-              <li key={opt.key}>{opt.label}</li>
-            ))}
+            <li>{config.count} тестируемых</li>
+            <li>{AUDIENCE_LABELS[config.audience]}</li>
           </ul>
-        </div>
-      )}
+        </li>
+
+        {selectedOptions.length > 0 && (
+          <li className={style.sidebarSummary__section}>
+            <p className={style.sidebarSummary__label}>Опции</p>
+            <ul className={style.sidebarSummary__list}>
+              {selectedOptions.map((opt) => (
+                <li key={opt.key}>{opt.label}</li>
+              ))}
+            </ul>
+          </li>
+        )}
+
+        {wizardStep > 1 && (
+          <li className={style.sidebarSummary__section}>
+            <p className={style.sidebarSummary__label}>Базовый функционал</p>
+            <ul className={style.sidebarSummary__list}>
+              {BASE_FEATURES.map((item) => (
+                <li key={item}>{item}</li>
+              ))}
+            </ul>
+          </li>
+        )}
+      </ul>
 
       <div className={style.sidebarPrice}>
         <span>Итого · без НДС</span>

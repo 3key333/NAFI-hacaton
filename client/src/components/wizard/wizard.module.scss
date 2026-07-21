@@ -238,6 +238,15 @@
   flex-direction: column;
   gap: 16px;
 
+  &__cards {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
   &__section {
     background: var(--color-white);
     border: 1px solid var(--color-border);
@@ -250,17 +259,21 @@
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.04em;
-    color: var(--color-text-muted);
+    color: var(--color-black);
     margin-bottom: 10px;
   }
 
   &__list {
-    padding-left: 0;
-    list-style: none;
+    padding-left: 18px;
+    list-style: disc;
     font-size: 14px;
 
     li {
       margin-bottom: 4px;
+
+      &::marker{
+        color: var(--color-primary);
+      }
 
       &:last-child {
         margin-bottom: 0;
