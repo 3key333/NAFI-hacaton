@@ -18,6 +18,10 @@
   --shadow-yellow: 0 4px 24px #ffc31e70;
 }
 
+html {
+  scroll-padding-top: var(--header-height);
+}
+
 #root,
 html,
 body {
@@ -29,6 +33,11 @@ body {
   font-weight: 400;
   color: var(--color-text);
   background: var(--color-bg);
+}
+
+/* Нативные якоря (футер и т.п.): верх секции под sticky-хедером */
+section[id] {
+  scroll-margin-top: var(--header-height);
 }
 
 * {

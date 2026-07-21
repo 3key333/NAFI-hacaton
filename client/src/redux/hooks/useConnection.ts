@@ -11,6 +11,7 @@ import {
   toggleOption as toggleOptionAction,
 } from '@/redux/slices/connectionSlice'
 import type { AppDispatch, RootState } from '@/redux/store'
+import { scrollToSection } from '@/helpers/scrollToSection'
 import type {
   AudienceType,
   ConnectionForm,
@@ -25,7 +26,7 @@ const useAppSelector = <T,>(selector: (state: RootState) => T) => useSelector(se
 
 const scrollToWizard = () => {
   setTimeout(() => {
-    document.getElementById('wizard')?.scrollIntoView({ behavior: 'smooth' })
+    scrollToSection('wizard')
   }, 50)
 }
 
