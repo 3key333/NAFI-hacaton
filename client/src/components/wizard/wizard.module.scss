@@ -96,8 +96,10 @@
     border-radius: 12px;
     padding: 32px;
     width: 100%;
-    min-height: 320px;
+    min-height: 560px;
     min-width: 0;
+    display: flex;
+    flex-direction: column;
 
     @media (max-width: 768px) {
       flex: 1;
@@ -116,27 +118,17 @@
     }
   }
 
-  &__mobilePrice {
-    display: none;
-
-    @media (max-width: 960px) {
-      display: block;
-      position: sticky;
-      bottom: 72px;
-      z-index: 10;
-      margin-top: auto;
-    }
-  }
-
   &__actions {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
+    justify-content: center;
     gap: 12px;
-    margin-top: 24px;
+    margin-top: auto;
+    padding-top: 24px;
 
     @media (max-width: 768px) {
-      padding-bottom: 80px;
+      padding-bottom: 8px;
     }
   }
 }
@@ -198,6 +190,9 @@
     border-radius: 50%;
     font-size: 13px;
     font-weight: 700;
+    line-height: 1;
+    text-align: center;
+    padding: 0;
   }
 
   p {
@@ -243,16 +238,11 @@
   flex-direction: column;
   gap: 16px;
 
-  &--compact {
-    gap: 0;
-  }
-
   &__section {
     background: var(--color-white);
     border: 1px solid var(--color-border);
     border-radius: 12px;
     padding: 16px;
-    box-shadow: var(--shadow);
   }
 
   &__label {
@@ -261,15 +251,13 @@
     text-transform: uppercase;
     letter-spacing: 0.04em;
     color: var(--color-text-muted);
-    margin-bottom: 8px;
+    margin-bottom: 10px;
   }
 
   &__list {
-    margin: 0;
-    padding-left: 16px;
-    font-size: 13px;
-    line-height: 1.45;
-    color: var(--color-dark);
+    padding-left: 0;
+    list-style: none;
+    font-size: 14px;
 
     li {
       margin-bottom: 4px;
@@ -289,13 +277,6 @@
   text-align: center;
   box-shadow: var(--shadow);
 
-  @media (max-width: 960px) {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 12px 16px;
-  }
-
   span {
     font-size: 13px;
     color: var(--color-text-muted);
@@ -306,20 +287,11 @@
     font-size: 24px;
     color: var(--color-dark);
     margin: 8px 0;
-
-    @media (max-width: 960px) {
-      margin: 0;
-      font-size: 18px;
-    }
   }
 
   p {
     font-size: 13px;
     color: var(--color-text-muted);
-
-    @media (max-width: 960px) {
-      display: none;
-    }
   }
 }
 
@@ -327,16 +299,44 @@
   font-size: 13px;
   color: var(--color-text-muted);
   text-decoration: underline;
-  margin-left: auto;
+  flex-basis: 100%;
+  text-align: center;
 
   &:hover {
     color: var(--color-dark);
   }
+}
 
-  @media (max-width: 768px) {
-    width: 100%;
-    margin-left: 0;
-    text-align: center;
+.priceBreakdownToggle {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 14px 16px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  background: var(--color-white);
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.2s ease, background 0.2s ease;
+
+  &:hover {
+    border-color: var(--color-dark);
+    background: var(--color-bg);
+  }
+
+  &__title {
+    flex: 1;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--color-dark);
+  }
+
+  &__arrow {
+    width: 12px;
+    height: 12px;
+    flex-shrink: 0;
+    object-fit: contain;
   }
 }
 
@@ -344,6 +344,7 @@
   border: 1px solid var(--color-border);
   border-radius: var(--radius);
   overflow: hidden;
+  margin-top: 10px;
 }
 
 .priceRow {
@@ -521,7 +522,14 @@
 }
 
 .success {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   text-align: center;
+  width: 100%;
+  min-height: 100%;
 
   h3 {
     color: var(--color-dark) !important;

@@ -1,4 +1,15 @@
+import { AUDIENCE_SEGMENTS } from '@/config/connectionConfig'
 import type { AudienceType, ConnectionOptions } from '@/types'
+import chatIcon from '@/assets/competencies/chat-svgrepo-com.svg'
+import chatIconWhite from '@/assets/competencies/chat-svgrepo-com_white.svg'
+import fileLockedIcon from '@/assets/competencies/file-locked-svgrepo-com.svg'
+import fileLockedIconWhite from '@/assets/competencies/file-locked-svgrepo-com_white.svg'
+import lockIcon from '@/assets/competencies/lock-svgrepo-com.svg'
+import lockIconWhite from '@/assets/competencies/lock-svgrepo-com_white.svg'
+import listIcon from '@/assets/competencies/numbered-list-svgrepo-com.svg'
+import listIconWhite from '@/assets/competencies/numbered-list-svgrepo-com_white.svg'
+import paintIcon from '@/assets/competencies/paint-svgrepo-com.svg'
+import paintIconWhite from '@/assets/competencies/paint-svgrepo-com_white.svg'
 
 export const NAV_LINKS = [
   { label: 'Продукт', href: '#benefits' },
@@ -70,42 +81,40 @@ export const WHY_NAFI = [
   { title: 'Новатор Москвы', text: 'Финалист премии за инновации' },
 ]
 
+const AUDIENCE_CONTENT: Record<
+  AudienceType,
+  { pains: string[]; benefits: string[] }
+> = {
+  enterprise: {
+    pains: ['CRM/AI не используются', 'Перегруз сильных сотрудников', 'Импортозамещение', 'Масштаб данных'],
+    benefits: ['Оценка по отделам', 'Траектории развития', 'Группы риска', 'Интеграция с HR/LMS'],
+  },
+  medium: {
+    pains: ['Нет системной оценки навыков', 'Сложно планировать обучение', 'Ограниченный бюджет T&D'],
+    benefits: ['Простой запуск', 'Базовая аналитика', 'Рекомендации по обучению', 'Быстрый ROI'],
+  },
+  gov: {
+    pains: ['Целевые показатели цифровизации', 'Отчётность', 'Импортозамещение'],
+    benefits: ['Оценка региона/ведомства', 'Группы риска', 'Образовательные траектории', 'Освещение в СМИ'],
+  },
+  education: {
+    pains: ['Цифровая трансформация вуза', 'Разный уровень студентов и сотрудников'],
+    benefits: ['Диагностика компетенций', 'Индивидуальные траектории', '5 групп навыков', 'Интеграция с LMS'],
+  },
+}
+
 export const AUDIENCE_TABS: {
   id: AudienceType
   label: string
   pains: string[]
   benefits: string[]
   recommendedOptions: (keyof ConnectionOptions)[]
-}[] = [
-  {
-    id: 'enterprise',
-    label: 'Крупный бизнес (1000+)',
-    pains: ['CRM/AI не используются', 'Перегруз сильных сотрудников', 'Импортозамещение', 'Масштаб данных'],
-    benefits: ['Оценка по отделам', 'Траектории развития', 'Группы риска', 'Интеграция с HR/LMS'],
-    recommendedOptions: ['api', 'certificates', 'recommendations'],
-  },
-  {
-    id: 'medium',
-    label: 'Средний бизнес (150–1000)',
-    pains: ['Нет системной оценки навыков', 'Сложно планировать обучение', 'Ограниченный бюджет T&D'],
-    benefits: ['Простой запуск', 'Базовая аналитика', 'Рекомендации по обучению', 'Быстрый ROI'],
-    recommendedOptions: ['recommendations', 'hints'],
-  },
-  {
-    id: 'gov',
-    label: 'Госорганы',
-    pains: ['Целевые показатели цифровизации', 'Отчётность', 'Импортозамещение'],
-    benefits: ['Оценка региона/ведомства', 'Группы риска', 'Образовательные траектории', 'Освещение в СМИ'],
-    recommendedOptions: ['certificates', 'recommendations'],
-  },
-  {
-    id: 'education',
-    label: 'Образование (вузы)',
-    pains: ['Цифровая трансформация вуза', 'Разный уровень студентов и сотрудников'],
-    benefits: ['Диагностика компетенций', 'Индивидуальные траектории', '5 групп навыков', 'Интеграция с LMS'],
-    recommendedOptions: ['certificates', 'hints', 'recommendations'],
-  },
-]
+}[] = AUDIENCE_SEGMENTS.map((segment) => ({
+  id: segment.id,
+  label: segment.tabLabel,
+  recommendedOptions: segment.recommendedOptions,
+  ...AUDIENCE_CONTENT[segment.id],
+}))
 
 export const PLATFORM_FEATURES = [
   { title: 'HR-мониторинг', text: 'Рейтинги сотрудников, группы риска и подсказки, кого и чему обучать.' },
@@ -141,26 +150,36 @@ export const INTEGRATIONS = ['1С', 'SAP', 'Битрикс24', 'Moodle', 'API/SS
 export const COMPETENCIES = [
   {
     title: 'Информационная',
+    icon: fileLockedIcon,
+    iconHover: fileLockedIconWhite,
     skills: ['Поиск информации', 'Оценка информации', 'Управление контентом'],
     report: 'Уровень владения поиском и оценкой данных, рекомендации по базовым навыкам.',
   },
   {
     title: 'Коммуникативная',
+    icon: chatIcon,
+    iconHover: chatIconWhite,
     skills: ['Цифровые коммуникации', 'Совместная работа', 'Этикет в сети'],
     report: 'Показатели командной работы онлайн и соблюдения цифрового этикета.',
   },
   {
     title: 'Создание контента',
+    icon: paintIcon,
+    iconHover: paintIconWhite,
     skills: ['Редактирование контента', 'Авторские права', 'Настройка ПО'],
     report: 'Оценка навыков создания материалов и работы с инструментами.',
   },
   {
     title: 'Безопасность',
+    icon: lockIcon,
+    iconHover: lockIconWhite,
     skills: ['Защита данных', 'Киберграмотность', 'Безопасность устройств'],
     report: 'Группы риска по безопасности, рекомендации по обучению.',
   },
   {
     title: 'Решение задач',
+    icon: listIcon,
+    iconHover: listIconWhite,
     skills: ['Повседневные задачи', 'Знания об ИКТ', 'Саморазвитие'],
     report: 'Траектории развития и подбор материалов для роста компетенций.',
   },
@@ -225,10 +244,48 @@ export const DEMO_QUESTIONS = [
 ]
 
 export const CASES = [
-  { org: 'Счётная палата', count: '2 000 чел. | Госорганы', result: '65% → 72%', src: '#'},
-  { org: 'Совкомфлот', count: '500 чел. | Крупный бизнес', result: '66% → 78%, отзывы 95%', src: 'https://nafi.ru/about/clients/4169/'},
-  { org: 'Росатом', count: '8 000 чел. | Крупный бизнес', result: 'Рост грамотности +25%', src: 'https://nafi.ru/about/clients/4167/'},
-  { org: 'Сеченовский', count: '3 000 чел. | Образование', result: '5 групп с траекториями', src: 'https://nafi.ru/about/clients/4170/'},
+  { 
+    org: 'Счётная палата', 
+    count: '2 000 чел. | Госорганы', 
+    result: 'Цифровая грамотность выросла с 65% до 72%', 
+    src: '#',
+    tasks: [
+      'Провели диагностику цифровой грамотности сотрудников', 
+      'Разработали систему диагностики компетенций по работе с специализированным ПО'
+    ]
+  },
+  { 
+    org: 'Совкомфлот', 
+    count: '500 чел. | Крупный бизнес', 
+    result: 'Цифровая грамотность выросла с 66% до 78%, отзывы 95%', 
+    src: 'https://nafi.ru/about/clients/4169/',
+    tasks:  [
+      'Провели диагностику цифровой грамотности плавсостава', 
+      'Выявили слабые места в использовании современных цифровых технологий', 
+      'Провели обучение по ключевым аспектам цифровой грамотности и кибербезопасности'
+    ]
+  },
+  { 
+    org: 'Росатом', 
+    count: '8 000 чел. | Крупный бизнес', 
+    result: 'Увеличили цифровую грамотность на 25%', 
+    src: 'https://nafi.ru/about/clients/4167/',
+    tasks: [
+      'Оценили уровень цифровых компетенций персонала для поддержки стратегии цифровой трансформации',
+      'Выявили зоны роста в использовании современных технологий сотрудниками'
+    ]
+  },
+  { 
+    org: 'Сеченовский университет', 
+    count: '3 000 чел. | Образование', 
+    result: 'Сформировали 5 групп с траекториями обучения', 
+    src: 'https://nafi.ru/about/clients/4170/',
+    tasks: [
+      'Оценили уровень цифровых компетенций ППС',
+      'Выявили потребности в обучении работе с цифровыми инструментами дистанционного обучения и управления знаниями',
+      'Создали систему мониторинга прогресса в освоении новых технологий для поддержки цифровой трансформации университета'
+    ]
+  },
 ]
 
 export const FAQ_ITEMS = [

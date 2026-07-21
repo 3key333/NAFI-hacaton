@@ -16,12 +16,38 @@ export const CompetenciesSection = () => {
           {COMPETENCIES.map((item) => (
             <div key={item.title} className={style.competencies__card}>
               <div className={style.competencies__front}>
-                <h3>{item.title}</h3>
-                <ul>{item.skills.map((s) => <li key={s}>{s}</li>)}</ul>
+                <div className={style.competencies__iconWrap}>
+                  <img
+                    src={item.icon}
+                    alt=""
+                    className={`${style.competencies__icon} ${style['competencies__icon--default']}`}
+                    aria-hidden="true"
+                  />
+                  <img
+                    src={item.iconHover}
+                    alt=""
+                    className={`${style.competencies__icon} ${style['competencies__icon--hover']}`}
+                    aria-hidden="true"
+                  />
+                </div>
+                <div className={style.competencies__frontText}>
+                  <h3>{item.title}</h3>
+                  <ul>{item.skills.map((s) => <li key={s}>{s}</li>)}</ul>
+                </div>
               </div>
               <div className={style.competencies__back}>
-                <h3>В отчёте и обучении</h3>
-                <p>{item.report}</p>
+                <div className={style.competencies__iconWrap}>
+                  <img
+                    src={item.iconHover}
+                    alt=""
+                    className={style.competencies__icon}
+                    aria-hidden="true"
+                  />
+                </div>
+                <div className={style.competencies__frontText}>
+                  <h3>В отчёте и обучении</h3>
+                  <p>{item.report}</p>
+                </div>
               </div>
             </div>
           ))}

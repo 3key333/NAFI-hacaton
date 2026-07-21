@@ -1,8 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux'
 import {
-  applyAudienceRecommendations as applyAudienceRecommendationsAction,
   resetWizard as resetWizardAction,
-  setAudience as setAudienceAction,
   setAudienceWithRecommendations as setAudienceWithRecommendationsAction,
   setContractAccepted as setContractAcceptedAction,
   setCount as setCountAction,
@@ -15,7 +13,6 @@ import {
 import type { AppDispatch, RootState } from '@/redux/store'
 import type {
   AudienceType,
-  ConnectionConfig,
   ConnectionForm,
   ConnectionOptions,
   PayerType,
@@ -23,8 +20,8 @@ import type {
   WizardStep,
 } from '@/types'
 
-export const useAppDispatch = () => useDispatch<AppDispatch>()
-export const useAppSelector = <T,>(selector: (state: RootState) => T) => useSelector(selector)
+const useAppDispatch = () => useDispatch<AppDispatch>()
+const useAppSelector = <T,>(selector: (state: RootState) => T) => useSelector(selector)
 
 const scrollToWizard = () => {
   setTimeout(() => {
@@ -34,15 +31,9 @@ const scrollToWizard = () => {
 
 export const useConnection = () => {
   const dispatch = useAppDispatch()
-  const {
-    config,
-    form,
-    payerType,
-    paymentMethod,
-    wizardStep,
-    contractAccepted,
-    wizardResetVersion,
-  } = useAppSelector((state) => state.connection)
+  const { config, form, payerType, paymentMethod, wizardStep, contractAccepted } = useAppSelector(
+    (state) => state.connection,
+  )
 
   const openWizard = () => {
     if (wizardStep === 5) {
@@ -58,13 +49,9 @@ export const useConnection = () => {
     paymentMethod,
     wizardStep,
     contractAccepted,
-    wizardResetVersion,
     setCount: (count: number) => dispatch(setCountAction(count)),
-    setAudience: (audience: ConnectionConfig['audience']) => dispatch(setAudienceAction(audience)),
     setAudienceWithRecommendations: (audience: AudienceType) =>
       dispatch(setAudienceWithRecommendationsAction(audience)),
-    applyAudienceRecommendations: (audience: AudienceType) =>
-      dispatch(applyAudienceRecommendationsAction(audience)),
     toggleOption: (key: keyof ConnectionOptions) => dispatch(toggleOptionAction(key)),
     setFormField: (field: keyof ConnectionForm, value: string | boolean) =>
       dispatch(setFormFieldAction({ field, value })),
