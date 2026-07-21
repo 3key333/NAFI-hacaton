@@ -134,9 +134,23 @@
     }
   }
 
+  &__total {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-top: 8px;
+    font-size: 13px;
+    color: var(--color-text-muted);
+
+    strong {
+      font-size: 20px;
+      color: var(--color-dark);
+    }
+  }
+
   &__cta {
     width: 100%;
-    margin-top: 16px;
+    margin-top: 12px;
     font-family: inherit;
     white-space: normal;
   }

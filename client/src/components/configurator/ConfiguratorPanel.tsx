@@ -8,6 +8,7 @@ import {
 } from '@/config/connectionConfig'
 import { Button } from '@/components/ui/Button'
 import { BASE_FEATURES } from '@/data/landingData'
+import { calculatePrice, formatPrice } from '@/helpers/priceCalculator'
 import { useConnection } from '@/redux/hooks/useConnection'
 import style from './configuratorPanel.module.scss'
 
@@ -23,6 +24,7 @@ export const ConfiguratorPanel = ({ compact = false, showBase = false }: Configu
   const [countInput, setCountInput] = useState(String(config.count))
   const [isCountFocused, setIsCountFocused] = useState(false)
   const [isAudienceOpen, setIsAudienceOpen] = useState(false)
+  const price = calculatePrice(config)
 
   useEffect(() => {
     if (!isCountFocused) {
@@ -144,9 +146,15 @@ export const ConfiguratorPanel = ({ compact = false, showBase = false }: Configu
       )}
 
       {compact && (
-        <Button className={style.panel__cta} onClick={openWizard}>
-          Перейти к конфигуратору
-        </Button>
+        <>
+          <div className={style.panel__total}>
+            <span>Итого · без НДС</span>
+            <strong>{formatPrice(price.total)}</strong>
+          </div>
+          <Button className={style.panel__cta} onClick={openWizard}>
+            Перейти к конфигуратору
+          </Button>
+        </>
       )}
     </div>
   )
