@@ -11,6 +11,11 @@ export const CasesSection = () => (
           <div key={item.org} className={style.cases__card}>
             <a href={`${item.src}`} target='_blank'>{item.org}</a>
             <p>{item.count}</p>
+            <ul>
+              {item.tasks.map((task, index) => (
+                <li key={index}>{task}</li>
+              ))}
+            </ul>
             <strong>{item.result}</strong>
           </div>
         ))}

@@ -1,11 +1,31 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { INTEGRATIONS, MOCK_LK_TABS, PLATFORM_FEATURES } from '@/data/landingData'
 import { SectionTitle } from '@/components/ui/SectionTitle'
 import style from '@/pages/landingPage/landingPage.module.scss'
 
+/** Наборы высот столбцов (%) — по одному на вкладку + для клика-слайдера */
+const BAR_PRESETS = [
+  [55, 80, 40, 68],
+  [72, 48, 90, 55],
+  [38, 65, 78, 86],
+  [60, 70, 52, 44],
+] as const
+
 export const FeaturesSection = () => {
   const [activeTab, setActiveTab] = useState(MOCK_LK_TABS[0].id)
   const activeContent = MOCK_LK_TABS.find((tab) => tab.id === activeTab) ?? MOCK_LK_TABS[0]
+  const [presetIndex, setPresetIndex] = useState(0)
+
+  useEffect(() => {
+    const tabIndex = MOCK_LK_TABS.findIndex((tab) => tab.id === activeTab)
+    setPresetIndex(tabIndex >= 0 ? tabIndex % BAR_PRESETS.length : 0)
+  }, [activeTab])
+
+  const bars = BAR_PRESETS[presetIndex]
+
+  const handleBarsClick = () => {
+    setPresetIndex((prev) => (prev + 1) % BAR_PRESETS.length)
+  }
 
   return (
     <section className="section">
@@ -38,11 +58,22 @@ export const FeaturesSection = () => {
           </div>
           <div className={style.features__mockPanel} role="tabpanel">
             <p>{activeContent.content}</p>
-            <div className={style.features__mockBars}>
-              <span style={{ height: '55%' }} />
-              <span style={{ height: '80%' }} />
-              <span style={{ height: '40%' }} />
-              <span style={{ height: '68%' }} />
+            <div
+              className={style.features__mockBars}
+              onClick={handleBarsClick}
+              role="button"
+              tabIndex={0}
+              aria-label="Переключить график"
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault()
+                  handleBarsClick()
+                }
+              }}
+            >
+              {bars.map((height, i) => (
+                <span key={i} style={{ height: `${height}%` }} />
+              ))}
             </div>
           </div>
         </div>

@@ -7,40 +7,58 @@ import type {
   PaymentMethod,
 } from '@/types'
 
-/** Короткие названия типов организаций — для select и конфигуратора. */
-export const AUDIENCE_OPTIONS: { id: AudienceType; label: string }[] = [
-  { id: 'enterprise', label: 'Крупный бизнес' },
-  { id: 'medium', label: 'Средний бизнес' },
-  { id: 'gov', label: 'Госорганы' },
-  { id: 'education', label: 'Образование' },
+/** Единый источник данных по сегментам ЦА: короткие/длинные названия и рекомендуемые опции. */
+export const AUDIENCE_SEGMENTS: {
+  id: AudienceType
+  label: string
+  tabLabel: string
+  recommendedOptions: (keyof ConnectionOptions)[]
+}[] = [
+  {
+    id: 'enterprise',
+    label: 'Крупный бизнес',
+    tabLabel: 'Крупный бизнес (1000+)',
+    recommendedOptions: ['api', 'certificates', 'recommendations'],
+  },
+  {
+    id: 'medium',
+    label: 'Средний бизнес',
+    tabLabel: 'Средний бизнес (150–1000)',
+    recommendedOptions: ['recommendations', 'hints'],
+  },
+  {
+    id: 'gov',
+    label: 'Госорганы',
+    tabLabel: 'Госорганы',
+    recommendedOptions: ['certificates', 'recommendations'],
+  },
+  {
+    id: 'education',
+    label: 'Образование',
+    tabLabel: 'Образование (вузы)',
+    recommendedOptions: ['certificates', 'hints', 'recommendations'],
+  },
 ]
 
+/** Короткие названия — для select и конфигуратора. */
+export const AUDIENCE_OPTIONS = AUDIENCE_SEGMENTS.map(({ id, label }) => ({ id, label }))
+
 export const AUDIENCE_LABELS: Record<AudienceType, string> = Object.fromEntries(
-  AUDIENCE_OPTIONS.map(({ id, label }) => [id, label]),
+  AUDIENCE_SEGMENTS.map(({ id, label }) => [id, label]),
 ) as Record<AudienceType, string>
 
-/** Рекомендуемые опции конфигуратора по сегменту ЦА (схема лендинга, блок «Для кого»). */
-export const AUDIENCE_RECOMMENDED_OPTIONS: Record<AudienceType, (keyof ConnectionOptions)[]> = {
-  enterprise: ['api', 'certificates', 'recommendations'],
-  medium: ['recommendations', 'hints'],
-  gov: ['certificates', 'recommendations'],
-  education: ['certificates', 'hints', 'recommendations'],
-}
+export const AUDIENCE_RECOMMENDED_OPTIONS: Record<AudienceType, (keyof ConnectionOptions)[]> =
+  Object.fromEntries(
+    AUDIENCE_SEGMENTS.map(({ id, recommendedOptions }) => [id, recommendedOptions]),
+  ) as Record<AudienceType, (keyof ConnectionOptions)[]>
 
 /** Доп. опции конфигуратора: единый источник label + price. */
 export const CONNECTION_OPTIONS = [
-  { key: 'certificates' as const, label: 'Сертификаты', price: 15_000 },
+  { key: 'certificates' as const, label: 'Сертификаты о прохождении теста', price: 15_000 },
   { key: 'hints' as const, label: 'Подсказки после неверных ответов', price: 8_000 },
   { key: 'recommendations' as const, label: 'Рекомендации по развитию', price: 12_000 },
   { key: 'api' as const, label: 'Интеграция по API', price: 25_000 },
 ]
-
-export const DEFAULT_CONNECTION_OPTIONS: ConnectionOptions = {
-  certificates: false,
-  hints: false,
-  recommendations: false,
-  api: false,
-}
 
 export const DEFAULT_CONNECTION_FORM: ConnectionForm = {
   firstName: '',

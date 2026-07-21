@@ -1,6 +1,6 @@
 import style from './button.module.scss'
 
-type ButtonVariant = 'primary' | 'secondary' | 'ghost'
+type ButtonVariant = 'primary' | 'secondary'
 
 interface ButtonProps {
   children: React.ReactNode
