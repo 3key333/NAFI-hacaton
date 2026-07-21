@@ -8,7 +8,6 @@ import {
 } from '@/config/connectionConfig'
 import { Button } from '@/components/ui/Button'
 import { BASE_FEATURES } from '@/data/landingData'
-import { calculatePrice, formatPrice } from '@/helpers/priceCalculator'
 import { useConnection } from '@/redux/hooks/useConnection'
 import style from './configuratorPanel.module.scss'
 
@@ -18,14 +17,6 @@ interface ConfiguratorPanelProps {
 }
 
 const clampCount = (value: number) => Math.min(MAX_USER_COUNT, Math.max(MIN_USER_COUNT, value))
-
-const getDisplayCount = (countInput: string, configCount: number) => {
-  const parsed = Number(countInput)
-  if (countInput && !Number.isNaN(parsed) && parsed >= MIN_USER_COUNT) {
-    return clampCount(parsed)
-  }
-  return configCount
-}
 
 export const ConfiguratorPanel = ({ compact = false, showBase = false }: ConfiguratorPanelProps) => {
   const { config, setCount, setAudienceWithRecommendations, toggleOption, openWizard } = useConnection()
@@ -40,8 +31,6 @@ export const ConfiguratorPanel = ({ compact = false, showBase = false }: Configu
   }, [config.count, isCountFocused])
 
   const displayValue = isCountFocused ? countInput : String(config.count)
-  const displayCount = getDisplayCount(isCountFocused ? countInput : String(config.count), config.count)
-  const price = calculatePrice({ ...config, count: displayCount })
 
   const handleCountChange = (value: string) => {
     const digitsOnly = value.replace(/\D/g, '')
@@ -153,12 +142,6 @@ export const ConfiguratorPanel = ({ compact = false, showBase = false }: Configu
           </ul>
         </div>
       )}
-
-      <div className={style.panel__price}>
-        <span>Ориентировочная стоимость</span>
-        <strong>{formatPrice(price.total)}</strong>
-        <p>{displayCount} × {formatPrice(price.pricePerUser)} · без НДС</p>
-      </div>
 
       {compact && (
         <Button className={style.panel__cta} onClick={openWizard}>

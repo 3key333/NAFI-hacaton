@@ -10,7 +10,6 @@
   --color-bg: #f5f5f5;
   --color-white: #ffffff;
   --color-border: rgba(87, 87, 87, 0.22);
-  --color-success: #2b2b2b;
   --color-error: #c62828;
   --container-width: 1100px;
   --header-height: 72px;
@@ -77,9 +76,4 @@ img {
 
 .section--alt {
   background: var(--color-white);
-}
-
-.section--dark {
-  background: var(--color-dark);
-  color: var(--color-white);
 }

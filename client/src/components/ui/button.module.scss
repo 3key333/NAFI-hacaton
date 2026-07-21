@@ -39,16 +39,6 @@
     }
   }
 
-  &--ghost {
-    background: transparent;
-    color: var(--color-dark);
-    padding: 10px 16px;
-
-    &:hover:not(:disabled) {
-      background: var(--color-primary-light);
-    }
-  }
-
   @media (max-width: 768px) {
     padding: 12px 20px;
     font-size: 14px;

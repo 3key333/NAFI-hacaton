@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useLayoutEffect, useRef, useState } from 'react'
 import { Button } from '@/components/ui/Button'
 import { WizardStep1 } from '@/components/wizard/steps/WizardStep1'
 import { WizardStep2 } from '@/components/wizard/steps/WizardStep2'
@@ -36,8 +36,22 @@ export const Wizard = ({ onConsultation }: WizardProps) => {
   } = useConnection()
 
   const [errors, setErrors] = useState<Record<string, string>>({})
+  const lockedScrollY = useRef<number | null>(null)
   const price = calculatePrice(config)
   const selectedOptions = CONNECTION_OPTIONS.filter((opt) => config.options[opt.key])
+
+  const changeStep = (step: WizardStep) => {
+    lockedScrollY.current = window.scrollY
+    ;(document.activeElement as HTMLElement | null)?.blur()
+    setWizardStep(step)
+  }
+
+  useLayoutEffect(() => {
+    if (lockedScrollY.current === null) return
+    const y = lockedScrollY.current
+    lockedScrollY.current = null
+    window.scrollTo(0, y)
+  }, [wizardStep])
 
   const handleWizardReset = () => {
     setErrors({})
@@ -77,19 +91,19 @@ export const Wizard = ({ onConsultation }: WizardProps) => {
       return
     }
     setErrors({})
-    if (wizardStep < TOTAL_STEPS) setWizardStep((wizardStep + 1) as WizardStep)
+    if (wizardStep < TOTAL_STEPS) changeStep((wizardStep + 1) as WizardStep)
   }
 
   const prevStep = () => {
     if (wizardStep > 1) {
-      setWizardStep((wizardStep - 1) as WizardStep)
+      changeStep((wizardStep - 1) as WizardStep)
       setErrors({})
     }
   }
 
   const goToStep = (step: number) => {
     if (step < 1 || step > wizardStep) return
-    setWizardStep(step as WizardStep)
+    changeStep(step as WizardStep)
     setErrors({})
   }
 
@@ -134,35 +148,31 @@ export const Wizard = ({ onConsultation }: WizardProps) => {
     }
   }
 
-  const renderSummary = (compact = false) => (
-    <div className={`${style.sidebarSummary} ${compact ? style['sidebarSummary--compact'] : ''}`}>
-      {!compact && (
-        <>
-          <div className={style.sidebarSummary__section}>
-            <p className={style.sidebarSummary__label}>Параметры</p>
-            <ul className={style.sidebarSummary__list}>
-              <li>{config.count} тестируемых</li>
-              <li>{AUDIENCE_LABELS[config.audience]}</li>
-            </ul>
-          </div>
+  const renderSummary = () => (
+    <div className={style.sidebarSummary}>
+      <div className={style.sidebarSummary__section}>
+        <p className={style.sidebarSummary__label}>Параметры</p>
+        <ul className={style.sidebarSummary__list}>
+          <li>{config.count} тестируемых</li>
+          <li>{AUDIENCE_LABELS[config.audience]}</li>
+        </ul>
+      </div>
 
-          {selectedOptions.length > 0 && (
-            <div className={style.sidebarSummary__section}>
-              <p className={style.sidebarSummary__label}>Опции</p>
-              <ul className={style.sidebarSummary__list}>
-                {selectedOptions.map((opt) => (
-                  <li key={opt.key}>{opt.label}</li>
-                ))}
-              </ul>
-            </div>
-          )}
-        </>
+      {selectedOptions.length > 0 && (
+        <div className={style.sidebarSummary__section}>
+          <p className={style.sidebarSummary__label}>Опции</p>
+          <ul className={style.sidebarSummary__list}>
+            {selectedOptions.map((opt) => (
+              <li key={opt.key}>{opt.label}</li>
+            ))}
+          </ul>
+        </div>
       )}
 
       <div className={style.sidebarPrice}>
-        <span>Итого</span>
+        <span>Итого · без НДС</span>
         <strong>{formatPrice(price.total)}</strong>
-        {!compact && <p>{config.count} тестируемых</p>}
+        <p>{config.count} тестируемых</p>
       </div>
     </div>
   )
@@ -222,10 +232,7 @@ export const Wizard = ({ onConsultation }: WizardProps) => {
           </div>
 
           {wizardStep < TOTAL_STEPS && (
-            <>
-              <aside className={style.wizard__sidebar}>{renderSummary()}</aside>
-              <div className={style.wizard__mobilePrice}>{renderSummary(true)}</div>
-            </>
+            <aside className={style.wizard__sidebar}>{renderSummary()}</aside>
           )}
         </div>
       </div>

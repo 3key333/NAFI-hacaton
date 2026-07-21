@@ -35,7 +35,6 @@ interface ConnectionState {
   paymentMethod: PaymentMethod
   wizardStep: WizardStep
   contractAccepted: boolean
-  wizardResetVersion: number
 }
 
 const initialState: ConnectionState = {
@@ -48,7 +47,6 @@ const initialState: ConnectionState = {
   paymentMethod: DEFAULT_PAYMENT_METHOD,
   wizardStep: 1,
   contractAccepted: false,
-  wizardResetVersion: 0,
 }
 
 const resetWizardState = (state: ConnectionState) => {
@@ -57,7 +55,6 @@ const resetWizardState = (state: ConnectionState) => {
   state.form = { ...DEFAULT_CONNECTION_FORM }
   state.payerType = DEFAULT_PAYER_TYPE
   state.paymentMethod = DEFAULT_PAYMENT_METHOD
-  state.wizardResetVersion += 1
 }
 
 const connectionSlice = createSlice({
@@ -66,12 +63,6 @@ const connectionSlice = createSlice({
   reducers: {
     setCount(state, action: PayloadAction<number>) {
       state.config.count = Math.min(MAX_USER_COUNT, Math.max(MIN_USER_COUNT, action.payload))
-    },
-    setAudience(state, action: PayloadAction<ConnectionConfig['audience']>) {
-      state.config.audience = action.payload
-    },
-    applyAudienceRecommendations(state, action: PayloadAction<AudienceType>) {
-      state.config.options = optionsFromRecommended(AUDIENCE_RECOMMENDED_OPTIONS[action.payload])
     },
     setAudienceWithRecommendations(state, action: PayloadAction<AudienceType>) {
       state.config.audience = action.payload
@@ -109,8 +100,6 @@ const connectionSlice = createSlice({
 
 export const {
   setCount,
-  setAudience,
-  applyAudienceRecommendations,
   setAudienceWithRecommendations,
   toggleOption,
   setFormField,
