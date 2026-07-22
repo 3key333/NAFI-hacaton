@@ -662,12 +662,22 @@
     }
   }
 
+  &__integrationsBlock {
+    margin-top: 24px;
+  }
+
+  &__integrationsTitle {
+    margin-bottom: 12px;
+    font-size: 13px;
+    text-align: center;
+    color: var(--color-text-muted);
+  }
+
   &__integrations {
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
     justify-content: center;
-    margin-top: 24px;
   }
 
   &__chip {

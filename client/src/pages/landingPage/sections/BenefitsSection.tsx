@@ -10,7 +10,7 @@ export const BenefitsSection = () => {
   return (
     <section id="benefits" className="section">
       <div className="container">
-        <SectionTitle title="Что вы получите" subtitle="Готовое платформенное решение с быстрым внедрением" />
+        <SectionTitle title="Что вы получаете" subtitle="Готовое платформенное решение с быстрым внедрением" />
         <div className={style.benefits__grid}>
           {BENEFITS.map((item) => (
             <div key={item.title} className={style.benefits__card}>

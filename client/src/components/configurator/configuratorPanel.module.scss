@@ -59,6 +59,12 @@
     appearance: none;
   }
 
+  &__countHint {
+    font-size: 12px;
+    color: var(--color-text-muted);
+    margin: 0;
+  }
+
   &__presets {
     display: flex;
     flex-wrap: wrap;
