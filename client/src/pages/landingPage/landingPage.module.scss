@@ -776,12 +776,15 @@
   }
 
   &__card {
+    flex-direction: column;
+    display: flex;
+    align-items: center;
     position: relative;
     background: var(--color-white);
     border: 1px solid var(--color-border);
     border-radius: 12px;
     padding: 24px 20px;
-    min-height: 280px;
+    height: 270px;
     overflow: hidden;
     transition: background 0.7s ease, border-color 0.25s ease;
     cursor: default;
@@ -790,6 +793,7 @@
       font-size: 16px;
       margin-bottom: 8px;
       transition: color 0.5s ease;
+      text-align: center;
     }
 
     ul {
@@ -797,7 +801,7 @@
       list-style: disc;
       font-size: 13px;
       color: var(--color-text-muted);
-      transition: color 10.5 ease;
+      transition: color 0.25s ease;
     }
 
     li {
@@ -807,21 +811,6 @@
     &:hover {
       background: var(--color-primary);
       border-color: var(--color-primary);
-
-      h3,
-      ul,
-      li,
-      p {
-        color: var(--color-white);
-      }
-
-      .competencies__icon--default {
-        opacity: 0;
-      }
-
-      .competencies__icon--hover {
-        opacity: 1;
-      }
 
       .competencies__front {
         opacity: 0;
@@ -850,7 +839,7 @@
     position: relative;
     width: 48px;
     height: 48px;
-    margin-bottom: 100px;
+    margin-bottom: 50px;
     flex-shrink: 0;
   }
 
@@ -858,17 +847,6 @@
     width: 48px;
     height: 48px;
     object-fit: contain;
-
-    &--default,
-    &--hover {
-      position: absolute;
-      inset: 0;
-      transition: opacity 0.25s ease;
-    }
-
-    &--hover {
-      opacity: 0;
-    }
   }
 
   &__frontText {
@@ -891,20 +869,12 @@
 
     h3 {
       font-size: 14px;
-      color: var(--color-white);
     }
 
-    ul {
-      color: var(--color-white);
-    }
-
-    li {
-      color: var(--color-white);
-    }
-
+    ul,
+    li,
     p {
       font-size: 13px;
-      color: var(--color-white);
       line-height: 1.5;
     }
   }
