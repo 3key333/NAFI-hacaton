@@ -107,6 +107,26 @@
         border-color: var(--color-primary);
       }
     }
+
+    select {
+      appearance: none;
+      -webkit-appearance: none;
+      padding-right: 36px;
+      background-color: var(--color-white);
+      background-image: url('/bottom-arrow-svgrepo-com.svg');
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      background-size: 12px 12px;
+      cursor: pointer;
+    }
+
+    textarea {
+      resize: none;
+    }
+  }
+
+  &__select--open {
+    background-image: url('/top-arrow-svgrepo-com.svg') !important;
   }
 
   &__input--error {

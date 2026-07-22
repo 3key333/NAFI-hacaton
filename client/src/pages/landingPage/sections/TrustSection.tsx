@@ -16,6 +16,7 @@ const LOOP_SLIDES = [
 export const TrustSection = () => {
   const [index, setIndex] = useState(1)
   const [withTransition, setWithTransition] = useState(true)
+  const [autoKey, setAutoKey] = useState(0)
 
   useEffect(() => {
     const id = window.setInterval(() => {
@@ -25,7 +26,7 @@ export const TrustSection = () => {
     }, SLIDE_INTERVAL_MS)
 
     return () => window.clearInterval(id)
-  }, [])
+  }, [autoKey])
 
   const handleTransitionEnd = () => {
     if (index === REAL_COUNT + 1) {
@@ -48,9 +49,24 @@ export const TrustSection = () => {
 
   const realIndex = (index - 1 + REAL_COUNT) % REAL_COUNT
 
+  const restartAuto = () => setAutoKey((key) => key + 1)
+
   const goTo = (dotIndex: number) => {
     setWithTransition(true)
     setIndex(dotIndex + 1)
+    restartAuto()
+  }
+
+  const goPrev = () => {
+    setWithTransition(true)
+    setIndex((prev) => prev - 1)
+    restartAuto()
+  }
+
+  const goNext = () => {
+    setWithTransition(true)
+    setIndex((prev) => prev + 1)
+    restartAuto()
   }
 
   return (
@@ -71,24 +87,44 @@ export const TrustSection = () => {
         </div>
 
         <div className={style.trust__slider}>
-          <div className={style.trust__viewport}>
-            <div
-              className={`${style.trust__track} ${withTransition ? style['trust__track--animate'] : ''}`}
-              style={{ transform: `translateX(-${index * 100}%)` }}
-              onTransitionEnd={handleTransitionEnd}
+          <div className={style.trust__sliderRow}>
+            <button
+              type="button"
+              className={`${style.trust__arrow} ${style['trust__arrow--prev']}`}
+              onClick={goPrev}
+              aria-label="Предыдущий логотип"
             >
-              {LOOP_SLIDES.map((logo, slideIndex) => (
-                <div key={`${logo.name}-${slideIndex}`} className={style.trust__slide}>
-                  <div className={style.trust__logo}>
-                    {logo.src ? (
-                      <img src={logo.src} alt={logo.name} loading="lazy" />
-                    ) : (
-                      <span>{logo.name}</span>
-                    )}
+              <img src="/bottom-arrow-svgrepo-com.svg" alt="" aria-hidden="true" />
+            </button>
+
+            <div className={style.trust__viewport}>
+              <div
+                className={`${style.trust__track} ${withTransition ? style['trust__track--animate'] : ''}`}
+                style={{ transform: `translateX(-${index * 100}%)` }}
+                onTransitionEnd={handleTransitionEnd}
+              >
+                {LOOP_SLIDES.map((logo, slideIndex) => (
+                  <div key={`${logo.name}-${slideIndex}`} className={style.trust__slide}>
+                    <div className={style.trust__logo}>
+                      {logo.src ? (
+                        <img src={logo.src} alt={logo.name} loading="lazy" />
+                      ) : (
+                        <span>{logo.name}</span>
+                      )}
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
+
+            <button
+              type="button"
+              className={`${style.trust__arrow} ${style['trust__arrow--next']}`}
+              onClick={goNext}
+              aria-label="Следующий логотип"
+            >
+              <img src="/bottom-arrow-svgrepo-com.svg" alt="" aria-hidden="true" />
+            </button>
           </div>
 
           <div className={style.trust__dots} role="tablist" aria-label="Логотипы компаний">
