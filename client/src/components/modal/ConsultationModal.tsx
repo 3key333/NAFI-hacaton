@@ -1,8 +1,16 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { AUDIENCE_OPTIONS, createEmptyConnectionForm } from '@/config/connectionConfig'
+import {
+  AUDIENCE_OPTIONS,
+  COMPANY_PLACEHOLDERS,
+  DEFAULT_PAYER_TYPE,
+  PAYER_TYPE_OPTIONS,
+  createEmptyConnectionForm,
+} from '@/config/connectionConfig'
 import { Button } from '@/components/ui/Button'
+import { PhoneInput } from '@/components/ui/PhoneInput'
+import { sanitizeNameInput } from '@/helpers/phoneFormat'
 import { validateConsultationForm } from '@/helpers/validateForm'
-import type { ConnectionForm } from '@/types'
+import type { ConnectionForm, PayerType } from '@/types'
 import style from './consultationModal.module.scss'
 
 interface ConsultationModalProps {
@@ -12,9 +20,12 @@ interface ConsultationModalProps {
 
 export const ConsultationModal = ({ isOpen, onClose }: ConsultationModalProps) => {
   const [form, setForm] = useState<ConnectionForm>(createEmptyConnectionForm())
+  const [payerType, setPayerType] = useState<PayerType>(DEFAULT_PAYER_TYPE)
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [success, setSuccess] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [isPayerOpen, setIsPayerOpen] = useState(false)
+  const [isOrgOpen, setIsOrgOpen] = useState(false)
   const submitTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const clearSubmitTimer = () => {
@@ -28,9 +39,12 @@ export const ConsultationModal = ({ isOpen, onClose }: ConsultationModalProps) =
     clearSubmitTimer()
     onClose()
     setForm(createEmptyConnectionForm())
+    setPayerType(DEFAULT_PAYER_TYPE)
     setErrors({})
     setSuccess(false)
     setLoading(false)
+    setIsPayerOpen(false)
+    setIsOrgOpen(false)
   }, [onClose])
 
   useEffect(() => {
@@ -91,41 +105,93 @@ export const ConsultationModal = ({ isOpen, onClose }: ConsultationModalProps) =
             <h3 className={style.modal__title}>Получить консультацию</h3>
             <p className={style.modal__subtitle}>Заполните форму — мы поможем подобрать решение</p>
 
-            <form className={style.form} onSubmit={handleSubmit}>
+            <form className={style.form} onSubmit={handleSubmit} noValidate>
+              <div className={style.form__field}>
+                <label>Тип плательщика</label>
+                <select
+                  value={payerType}
+                  className={isPayerOpen ? style['form__select--open'] : undefined}
+                  onClick={() => setIsPayerOpen((open) => !open)}
+                  onBlur={() => setIsPayerOpen(false)}
+                  onChange={(e) => {
+                    setPayerType(e.target.value as PayerType)
+                    setIsPayerOpen(false)
+                  }}
+                >
+                  {PAYER_TYPE_OPTIONS.map((item) => (
+                    <option key={item.id} value={item.id}>
+                      {item.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
               <div className={style.form__row}>
                 <div className={style.form__field}>
                   <label>Имя *</label>
-                  <input value={form.firstName} onChange={(e) => setField('firstName', e.target.value)} className={errors.firstName ? style['form__input--error'] : ''} />
+                  <input
+                    value={form.firstName}
+                    onChange={(e) => setField('firstName', sanitizeNameInput(e.target.value))}
+                    className={errors.firstName ? style['form__input--error'] : ''}
+                    autoComplete="given-name"
+                  />
                   {errors.firstName && <span className={style.form__error}>{errors.firstName}</span>}
                 </div>
                 <div className={style.form__field}>
                   <label>Фамилия *</label>
-                  <input value={form.lastName} onChange={(e) => setField('lastName', e.target.value)} className={errors.lastName ? style['form__input--error'] : ''} />
+                  <input
+                    value={form.lastName}
+                    onChange={(e) => setField('lastName', sanitizeNameInput(e.target.value))}
+                    className={errors.lastName ? style['form__input--error'] : ''}
+                    autoComplete="family-name"
+                  />
                   {errors.lastName && <span className={style.form__error}>{errors.lastName}</span>}
                 </div>
               </div>
 
               <div className={style.form__field}>
                 <label>Email *</label>
-                <input type="email" value={form.email} onChange={(e) => setField('email', e.target.value)} className={errors.email ? style['form__input--error'] : ''} />
+                <input
+                  type="email"
+                  value={form.email}
+                  onChange={(e) => setField('email', e.target.value)}
+                  className={errors.email ? style['form__input--error'] : ''}
+                  autoComplete="email"
+                />
                 {errors.email && <span className={style.form__error}>{errors.email}</span>}
               </div>
 
-              <div className={style.form__row}>
-                <div className={style.form__field}>
-                  <label>Компания</label>
-                  <input value={form.company} onChange={(e) => setField('company', e.target.value)} />
-                </div>
-                <div className={style.form__field}>
-                  <label>Телефон</label>
-                  <input value={form.phone} onChange={(e) => setField('phone', e.target.value)} />
-                </div>
+              <div className={style.form__field}>
+                <label>Компания</label>
+                <input
+                  value={form.company}
+                  onChange={(e) => setField('company', e.target.value)}
+                  placeholder={COMPANY_PLACEHOLDERS[payerType]}
+                />
+              </div>
+
+              <div className={style.form__field}>
+                <label>Телефон *</label>
+                <PhoneInput
+                  value={form.phone}
+                  onChange={(value) => setField('phone', value)}
+                  error={Boolean(errors.phone)}
+                />
+                {errors.phone && <span className={style.form__error}>{errors.phone}</span>}
               </div>
 
               <div className={style.form__field}>
                 <label>Тип организации</label>
-                <select value={form.orgType} onChange={(e) => setField('orgType', e.target.value)}>
-                  <option value="">Выберите</option>
+                <select
+                  value={form.orgType}
+                  className={isOrgOpen ? style['form__select--open'] : undefined}
+                  onClick={() => setIsOrgOpen((open) => !open)}
+                  onBlur={() => setIsOrgOpen(false)}
+                  onChange={(e) => {
+                    setField('orgType', e.target.value)
+                    setIsOrgOpen(false)
+                  }}
+                >
                   {AUDIENCE_OPTIONS.map((option) => (
                     <option key={option.id} value={option.id}>
                       {option.label}
@@ -140,8 +206,12 @@ export const ConsultationModal = ({ isOpen, onClose }: ConsultationModalProps) =
               </div>
 
               <label className={style.form__checkbox}>
-                <input type="checkbox" checked={form.consent} onChange={(e) => setField('consent', e.target.checked)} />
-                <span>Я даю согласие на обработку персональных данных</span>
+                <input
+                  type="checkbox"
+                  checked={form.consent}
+                  onChange={(e) => setField('consent', e.target.checked)}
+                />
+                <span>Согласие на обработку персональных данных *</span>
               </label>
               {errors.consent && <span className={style.form__error}>{errors.consent}</span>}
 

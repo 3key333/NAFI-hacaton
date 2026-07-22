@@ -71,26 +71,6 @@ export const ContactsSection = () => {
             </div>
           ) : (
             <form className={style.contacts__form} onSubmit={handleSubmit} noValidate>
-              <div className={style.contacts__row}>
-                <div className={style.contacts__field}>
-                  <input
-                    placeholder="Имя *"
-                    value={form.firstName}
-                    onChange={(e) => setField('firstName', e.target.value)}
-                    className={errors.firstName ? style['contacts__input--error'] : ''}
-                  />
-                  {errors.firstName && <span className={style.contacts__error}>{errors.firstName}</span>}
-                </div>
-                <div className={style.contacts__field}>
-                  <input
-                    placeholder="Фамилия *"
-                    value={form.lastName}
-                    onChange={(e) => setField('lastName', e.target.value)}
-                    className={errors.lastName ? style['contacts__input--error'] : ''}
-                  />
-                  {errors.lastName && <span className={style.contacts__error}>{errors.lastName}</span>}
-                </div>
-              </div>
               <div className={style.contacts__field}>
                 <input
                   type="email"
@@ -101,12 +81,16 @@ export const ContactsSection = () => {
                 />
                 {errors.email && <span className={style.contacts__error}>{errors.email}</span>}
               </div>
-              <textarea
-                placeholder="Сообщение"
-                rows={3}
-                value={form.comment}
-                onChange={(e) => setField('comment', e.target.value)}
-              />
+              <div className={style.contacts__field}>
+                <textarea
+                  placeholder="Сообщение *"
+                  rows={3}
+                  value={form.comment}
+                  onChange={(e) => setField('comment', e.target.value)}
+                  className={errors.comment ? style['contacts__input--error'] : ''}
+                />
+                {errors.comment && <span className={style.contacts__error}>{errors.comment}</span>}
+              </div>
               <label className={style.contacts__consent}>
                 <input
                   type="checkbox"

@@ -212,7 +212,48 @@
     }
   }
 
+  &__sliderRow {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  &__arrow {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1px solid var(--color-border);
+    background: var(--color-white);
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s;
+
+    img {
+      width: 12px;
+      height: 12px;
+      display: block;
+    }
+
+    &--prev img {
+      transform: rotate(90deg);
+    }
+
+    &--next img {
+      transform: rotate(-90deg);
+    }
+
+    &:hover {
+      border-color: var(--color-dark);
+      background: var(--color-primary-light);
+    }
+  }
+
   &__viewport {
+    flex: 1;
+    min-width: 0;
     width: 100%;
     overflow: hidden;
   }
@@ -687,7 +728,6 @@
     align-items: flex-end;
     gap: 10px;
     height: 80px;
-    cursor: pointer;
 
     span {
       flex: 1;
@@ -700,6 +740,20 @@
 }
 
 .competencies {
+  &__hintMobile {
+    display: none;
+  }
+
+  @media (max-width: 768px) {
+    &__hintDesktop {
+      display: none;
+    }
+
+    &__hintMobile {
+      display: inline;
+    }
+  }
+
   &__grid {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
@@ -722,20 +776,21 @@
     padding: 24px 20px;
     min-height: 280px;
     overflow: hidden;
-    transition: background 0.25s ease, border-color 0.25s ease;
+    transition: background 0.7s ease, border-color 0.25s ease;
     cursor: default;
 
     h3 {
       font-size: 16px;
       margin-bottom: 8px;
-      transition: color 0.25s ease;
+      transition: color 0.5s ease;
     }
 
     ul {
-      padding-left: 16px;
+      padding-left: 18px;
+      list-style: disc;
       font-size: 13px;
       color: var(--color-text-muted);
-      transition: color 0.25s ease;
+      transition: color 10.5 ease;
     }
 
     li {
@@ -764,11 +819,13 @@
       .competencies__front {
         opacity: 0;
         transform: scale(0);
+        transition: all 0.4s ease;
       }
 
       .competencies__back {
         opacity: 1;
         transform: scale(1);
+        transition: all 0.4s ease;
       }
     }
   }
@@ -830,6 +887,14 @@
       color: var(--color-white);
     }
 
+    ul {
+      color: var(--color-white);
+    }
+
+    li {
+      color: var(--color-white);
+    }
+
     p {
       font-size: 13px;
       color: var(--color-white);
@@ -853,13 +918,34 @@
   }
 
   &__card {
+    display: flex;
+    align-items: center;
+    gap: 24px;
     width: 100%;
     background: var(--color-white);
     border: 1px solid var(--color-border);
     border-radius: 12px;
     padding: 24px;
 
+    @media (max-width: 768px) {
+      flex-direction: column-reverse;
+      align-items: stretch;
+      gap: 16px;
+    }
+  }
+
+  &__content {
+    flex: 0 0 75%;
+    max-width: 75%;
+    min-width: 0;
+
+    @media (max-width: 768px) {
+      flex: 1 1 auto;
+      max-width: none;
+    }
+
     a {
+      display: inline-block;
       font-size: 16px;
       font-weight: 700;
       margin-bottom: 8px;
@@ -875,15 +961,15 @@
     }
 
     ul {
-      margin: 0px 0px 15px 18px;
+      margin: 0 0 15px 18px;
 
-      li{
+      li {
         color: var(--color-text-muted);
-        &::marker{
+
+        &::marker {
           color: var(--color-primary);
         }
       }
-
     }
 
     strong {
@@ -893,6 +979,57 @@
       display: inline-block;
       padding: 4px 10px;
       border-radius: var(--radius);
+    }
+  }
+
+  &__logo {
+    flex: 1 1 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 0;
+    max-width: 100%;
+    min-height: 96px;
+    padding: 8px;
+    overflow: hidden;
+
+    @media (max-width: 768px) {
+      width: 100%;
+      min-height: 64px;
+      max-height: 80px;
+      padding: 4px 0;
+    }
+
+    img {
+      display: block;
+      max-width: 100%;
+      max-height: 120px;
+      width: auto;
+      height: auto;
+      object-fit: contain;
+
+      @media (max-width: 768px) {
+        max-width: 100%;
+        max-height: 64px;
+        width: auto;
+        height: auto;
+      }
+    }
+
+    &--large {
+      @media (max-width: 768px) {
+        min-height: 96px;
+        max-height: 120px;
+        margin-bottom: -10px;
+      }
+
+      img {
+        max-height: 160px;
+
+        @media (max-width: 768px) {
+          max-height: 96px;
+        }
+      }
     }
   }
 }
@@ -998,6 +1135,10 @@
       &:focus {
         border-color: var(--color-dark);
       }
+    }
+
+    textarea {
+      resize: none;
     }
   }
 

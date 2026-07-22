@@ -11,7 +11,19 @@ export const CompetenciesSection = () => {
   return (
     <section className={`section section--alt ${style.competencies}`}>
       <div className="container">
-        <SectionTitle title="5 сфер компетенций" subtitle="Наведите на карточку — увидите, что попадёт в отчёт" />
+        <SectionTitle
+          title="5 сфер компетенций"
+          subtitle={
+            <>
+              <span className={style.competencies__hintDesktop}>
+                Наведите на карточку — увидите, что попадёт в отчёт
+              </span>
+              <span className={style.competencies__hintMobile}>
+                Нажмите на карточку — увидите, что попадёт в отчёт
+              </span>
+            </>
+          }
+        />
         <div className={style.competencies__grid}>
           {COMPETENCIES.map((item) => (
             <div key={item.title} className={style.competencies__card}>
@@ -46,7 +58,11 @@ export const CompetenciesSection = () => {
                 </div>
                 <div className={style.competencies__frontText}>
                   <h3>В отчёте и обучении</h3>
-                  <p>{item.report}</p>
+                  <ul>
+                    {item.report.map((point) => (
+                      <li key={point}>{point}</li>
+                    ))}
+                  </ul>
                 </div>
               </div>
             </div>

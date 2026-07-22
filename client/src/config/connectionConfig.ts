@@ -67,7 +67,7 @@ export const DEFAULT_CONNECTION_FORM: ConnectionForm = {
   company: '',
   phone: '',
   comment: '',
-  orgType: '',
+  orgType: 'medium',
   consent: false,
 }
 
@@ -96,6 +96,12 @@ export const PAYER_TYPE_OPTIONS: { id: PayerType; label: string }[] = [
   { id: 'ip', label: 'ИП' },
   { id: 'legal', label: 'Юрлицо' },
 ]
+
+export const COMPANY_PLACEHOLDERS: Record<PayerType, string> = {
+  legal: 'ООО "Ромашка"',
+  individual: 'Иванов Иван Иванович',
+  ip: 'ИП Иванов И.И',
+}
 
 export const getPaymentMethodsForPayer = (payerType: PayerType): PaymentMethod[] =>
   payerType === 'individual' ? ['card'] : ['invoice']
