@@ -86,6 +86,9 @@ export const ConfiguratorPanel = ({ compact = false, showBase = false }: Configu
           onBlur={handleCountBlur}
           className={style.panel__countInput}
         />
+        {compact && (
+          <p className={style.panel__countHint}>Выберите число или напишите свой вариант</p>
+        )}
         <div className={style.panel__presets} role="group" aria-label="Быстрый выбор количества">
           {COUNT_PRESETS.map((preset) => (
             <button
@@ -152,7 +155,7 @@ export const ConfiguratorPanel = ({ compact = false, showBase = false }: Configu
             <strong>{formatPrice(price.total)}</strong>
           </div>
           <Button className={style.panel__cta} onClick={openWizard}>
-            Перейти к конфигуратору
+            Рассчитать стоимость
           </Button>
         </>
       )}

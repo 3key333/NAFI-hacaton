@@ -57,10 +57,13 @@ export const FeaturesSection = () => {
           </div>
         </div>
 
-        <div className={style.features__integrations}>
-          {INTEGRATIONS.map((item) => (
-            <span key={item} className={style.features__chip}>{item}</span>
-          ))}
+        <div className={style.features__integrationsBlock}>
+          <p className={style.features__integrationsTitle}>Возможности интеграции нашего продукта</p>
+          <div className={style.features__integrations}>
+            {INTEGRATIONS.map((item) => (
+              <span key={item} className={style.features__chip}>{item}</span>
+            ))}
+          </div>
         </div>
       </div>
     </section>

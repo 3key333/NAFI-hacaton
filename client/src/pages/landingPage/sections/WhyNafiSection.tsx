@@ -5,7 +5,7 @@ import style from '@/pages/landingPage/landingPage.module.scss'
 export const WhyNafiSection = () => (
   <section className="section">
     <div className="container">
-      <SectionTitle title="Почему выбирают НАФИ" />
+      <SectionTitle title="Почему выбирают нас" />
       <div className={style.why__grid}>
         {WHY_NAFI.map((item) => (
           <div key={item.title} className={style.why__card}>
