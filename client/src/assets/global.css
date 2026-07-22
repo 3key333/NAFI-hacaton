@@ -70,6 +70,18 @@ textarea {
   -webkit-text-fill-color: var(--color-text);
 }
 
+input::placeholder,
+textarea::placeholder {
+  color: var(--color-text-muted);
+  opacity: 1;
+}
+
+input::-webkit-input-placeholder,
+textarea::-webkit-input-placeholder {
+  color: var(--color-text-muted);
+  -webkit-text-fill-color: var(--color-text-muted);
+}
+
 select {
   -webkit-appearance: none;
   appearance: none;

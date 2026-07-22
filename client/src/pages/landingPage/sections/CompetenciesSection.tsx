@@ -32,13 +32,7 @@ export const CompetenciesSection = () => {
                   <img
                     src={item.icon}
                     alt=""
-                    className={`${style.competencies__icon} ${style['competencies__icon--default']}`}
-                    aria-hidden="true"
-                  />
-                  <img
-                    src={item.iconHover}
-                    alt=""
-                    className={`${style.competencies__icon} ${style['competencies__icon--hover']}`}
+                    className={style.competencies__icon}
                     aria-hidden="true"
                   />
                 </div>
@@ -50,7 +44,7 @@ export const CompetenciesSection = () => {
               <div className={style.competencies__back}>
                 <div className={style.competencies__iconWrap}>
                   <img
-                    src={item.iconHover}
+                    src={item.icon}
                     alt=""
                     className={style.competencies__icon}
                     aria-hidden="true"
