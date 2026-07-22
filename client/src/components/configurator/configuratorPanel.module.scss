@@ -6,12 +6,6 @@
   box-shadow: var(--shadow);
   color: var(--color-text);
 
-  &--compact {
-    .panel__options {
-      display: none;
-    }
-  }
-
   &__field {
     display: flex;
     flex-direction: column;
@@ -40,6 +34,8 @@
       appearance: none;
       -webkit-appearance: none;
       padding-right: 36px;
+      color: var(--color-text);
+      -webkit-text-fill-color: var(--color-text);
       background-color: var(--color-white);
       background-image: url('/bottom-arrow-svgrepo-com.svg');
       background-repeat: no-repeat;
@@ -47,8 +43,10 @@
       background-size: 12px 12px;
       cursor: pointer;
 
-      &:open {
-        background-image: url('/top-arrow-svgrepo-com.svg');
+      option {
+        color: var(--color-text);
+        background-color: var(--color-white);
+        -webkit-text-fill-color: var(--color-text);
       }
     }
   }

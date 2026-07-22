@@ -208,12 +208,6 @@
     margin-bottom: 20px;
     color: var(--color-dark);
   }
-
-  h4 {
-    font-size: 15px;
-    margin-bottom: 12px;
-    color: var(--color-dark);
-  }
 }
 
 .stepCost {
@@ -458,12 +452,20 @@
     appearance: none;
     -webkit-appearance: none;
     padding-right: 36px;
+    color: var(--color-text);
+    -webkit-text-fill-color: var(--color-text);
     background-color: var(--color-white);
     background-image: url('/bottom-arrow-svgrepo-com.svg');
     background-repeat: no-repeat;
     background-position: right 14px center;
     background-size: 12px 12px;
     cursor: pointer;
+
+    option {
+      color: var(--color-text);
+      background-color: var(--color-white);
+      -webkit-text-fill-color: var(--color-text);
+    }
   }
 
   &__select--open {

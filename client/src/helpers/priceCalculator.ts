@@ -11,15 +11,14 @@ const OPTION_LABELS = Object.fromEntries(
   CONNECTION_OPTIONS.map(({ key, label }) => [key, label]),
 ) as Record<(typeof CONNECTION_OPTIONS)[number]['key'], string>
 
-export const getPricePerUser = (count: number): number => {
+const getPricePerUser = (count: number): number => {
   const tier = USER_PRICE_TIERS.find((item) => count >= item.min)
   return tier?.price ?? USER_PRICE_TIERS[USER_PRICE_TIERS.length - 1].price
 }
 
 export const getPriceTierLabel = (count: number): string => {
-  if (count > 4000) return 'более 4000 чел.'
-  if (count > 500) return '501–4000 чел.'
-  return 'до 500 чел.'
+  const tier = USER_PRICE_TIERS.find((item) => count >= item.min)
+  return tier?.label ?? USER_PRICE_TIERS[USER_PRICE_TIERS.length - 1].label
 }
 
 export const calculatePrice = (config: ConnectionConfig): PriceBreakdown => {

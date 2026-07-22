@@ -106,6 +106,9 @@ export const COMPANY_PLACEHOLDERS: Record<PayerType, string> = {
 export const getPaymentMethodsForPayer = (payerType: PayerType): PaymentMethod[] =>
   payerType === 'individual' ? ['card'] : ['invoice']
 
+export const getDefaultPaymentMethodForPayer = (payerType: PayerType): PaymentMethod =>
+  getPaymentMethodsForPayer(payerType)[0]
+
 export const PAYMENT_METHOD_OPTIONS: { id: PaymentMethod; label: string }[] = [
   { id: 'card', label: 'Банковская карта' },
   { id: 'invoice', label: 'Счёт для юрлиц / ИП' },

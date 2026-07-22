@@ -3,7 +3,7 @@ import { INTEGRATIONS, MOCK_LK_TABS, PLATFORM_FEATURES } from '@/data/landingDat
 import { SectionTitle } from '@/components/ui/SectionTitle'
 import style from '@/pages/landingPage/landingPage.module.scss'
 
-/** Наборы высот столбцов (%) — по одному на вкладку + для клика-слайдера */
+/** Наборы высот столбцов (%) — по одному на вкладку */
 const BAR_PRESETS = [
   [55, 80, 40, 68],
   [72, 48, 90, 55],

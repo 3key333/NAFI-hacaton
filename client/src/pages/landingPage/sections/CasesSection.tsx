@@ -10,19 +10,30 @@ export const CasesSection = () => (
         {CASES.map((item) => (
           <div key={item.org} className={style.cases__card}>
             <div className={style.cases__content}>
-              <a href={item.src} target="_blank" rel="noreferrer">
+              <a href={item.src} target="_blank" rel="noreferrer" className={style.cases__title}>
                 {item.org}
               </a>
-              <p>{item.count}</p>
-              <ul>
+
+              <div className={style.cases__company}>
+                <div
+                  className={`${style.cases__logo} ${style['cases__logo--mobile']} ${item.logo.includes('SECH') ? style['cases__logo--large'] : ''}`}
+                >
+                  <img src={item.logo} alt={item.org} loading="lazy" />
+                </div>
+                <p className={style.cases__about}>{item.about}</p>
+              </div>
+
+              <p className={style.cases__count}>{item.count}</p>
+              <ul className={style.cases__tasks}>
                 {item.tasks.map((task, index) => (
                   <li key={index}>{task}</li>
                 ))}
               </ul>
-              <strong>{item.result}</strong>
+              <strong className={style.cases__result}>{item.result}</strong>
             </div>
+
             <div
-              className={`${style.cases__logo} ${item.logo.includes('SECH') ? style['cases__logo--large'] : ''}`}
+              className={`${style.cases__logo} ${style['cases__logo--desktop']} ${item.logo.includes('SECH') ? style['cases__logo--large'] : ''}`}
             >
               <img src={item.logo} alt={item.org} loading="lazy" />
             </div>
