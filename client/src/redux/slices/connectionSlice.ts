@@ -5,6 +5,7 @@ import {
   DEFAULT_CONNECTION_FORM,
   DEFAULT_PAYER_TYPE,
   DEFAULT_PAYMENT_METHOD,
+  getDefaultPaymentMethodForPayer,
   MAX_USER_COUNT,
   MIN_USER_COUNT,
 } from '@/config/connectionConfig'
@@ -17,9 +18,6 @@ import type {
   PaymentMethod,
   WizardStep,
 } from '@/types'
-
-const paymentMethodForPayer = (payerType: PayerType): PaymentMethod =>
-  payerType === 'individual' ? 'card' : 'invoice'
 
 const optionsFromRecommended = (keys: (keyof ConnectionOptions)[]): ConnectionOptions => ({
   certificates: keys.includes('certificates'),
@@ -81,7 +79,7 @@ const connectionSlice = createSlice({
     },
     setPayerType(state, action: PayloadAction<PayerType>) {
       state.payerType = action.payload
-      state.paymentMethod = paymentMethodForPayer(action.payload)
+      state.paymentMethod = getDefaultPaymentMethodForPayer(action.payload)
     },
     setPaymentMethod(state, action: PayloadAction<PaymentMethod>) {
       state.paymentMethod = action.payload

@@ -26,7 +26,7 @@ export const Header = ({ onConsultation }: HeaderProps) => {
           <span>Цифровой гражданин</span>
         </a>
 
-        <nav className={`${style.header__nav} ${menuOpen ? style['header__nav--open'] : ''}`}>
+        <nav className={style.header__nav}>
           {NAV_LINKS.map((link) => (
             <button key={link.href} className={style.header__link} onClick={() => handleNav(link.href)}>
               {link.label}

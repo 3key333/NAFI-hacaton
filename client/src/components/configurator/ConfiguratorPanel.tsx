@@ -73,7 +73,7 @@ export const ConfiguratorPanel = ({ compact = false, showBase = false }: Configu
   }
 
   return (
-    <div className={`${style.panel} ${compact ? style['panel--compact'] : ''}`}>
+    <div className={style.panel}>
       <div className={style.panel__field}>
         <label>Количество тестируемых</label>
         <input

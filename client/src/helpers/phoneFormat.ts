@@ -81,8 +81,8 @@ export const isValidCisPhone = (phone: string): boolean => {
   return getDigits(national).length === option.maxNational
 }
 
-export const NAME_MIN_LENGTH = 2
-export const NAME_MAX_LENGTH = 40
+const NAME_MIN_LENGTH = 2
+const NAME_MAX_LENGTH = 40
 
 /** Буквы (кириллица/латиница), дефис, апостроф, пробел. */
 const NAME_PATTERN = /^[A-Za-zА-Яа-яЁёІіЇїЄєҐґӘәӨөҮүҚқҢң\-'\s]+$/u

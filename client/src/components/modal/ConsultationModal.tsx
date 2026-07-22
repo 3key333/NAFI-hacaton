@@ -9,7 +9,7 @@ import {
 import { Button } from '@/components/ui/Button'
 import { PhoneInput } from '@/components/ui/PhoneInput'
 import { sanitizeNameInput } from '@/helpers/phoneFormat'
-import { validateConsultationForm } from '@/helpers/validateForm'
+import { validateConnectionForm } from '@/helpers/validateForm'
 import type { ConnectionForm, PayerType } from '@/types'
 import style from './consultationModal.module.scss'
 
@@ -72,7 +72,7 @@ export const ConsultationModal = ({ isOpen, onClose }: ConsultationModalProps) =
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    const validation = validateConsultationForm(form)
+    const validation = validateConnectionForm(form)
     if (Object.keys(validation).length) {
       setErrors(validation)
       return

@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef, useState } from 'react'
+import { useState } from 'react'
 import { Button } from '@/components/ui/Button'
 import { WizardStep1 } from '@/components/wizard/steps/WizardStep1'
 import { WizardStep2 } from '@/components/wizard/steps/WizardStep2'
@@ -8,6 +8,7 @@ import { WizardStep5 } from '@/components/wizard/steps/WizardStep5'
 import { AUDIENCE_LABELS, CONNECTION_OPTIONS } from '@/config/connectionConfig'
 import { BASE_FEATURES, WIZARD_STEPS } from '@/data/landingData'
 import { calculatePrice, formatPrice } from '@/helpers/priceCalculator'
+import { scrollToSection } from '@/helpers/scrollToSection'
 import { validateConnectionForm } from '@/helpers/validateForm'
 import { useConnection } from '@/redux/hooks/useConnection'
 import type { WizardStep } from '@/types'
@@ -36,22 +37,14 @@ export const Wizard = ({ onConsultation }: WizardProps) => {
   } = useConnection()
 
   const [errors, setErrors] = useState<Record<string, string>>({})
-  const lockedScrollY = useRef<number | null>(null)
   const price = calculatePrice(config)
   const selectedOptions = CONNECTION_OPTIONS.filter((opt) => config.options[opt.key])
 
   const changeStep = (step: WizardStep) => {
-    lockedScrollY.current = window.scrollY
     ;(document.activeElement as HTMLElement | null)?.blur()
     setWizardStep(step)
+    requestAnimationFrame(() => scrollToSection('wizard'))
   }
-
-  useLayoutEffect(() => {
-    if (lockedScrollY.current === null) return
-    const y = lockedScrollY.current
-    lockedScrollY.current = null
-    window.scrollTo(0, y)
-  }, [wizardStep])
 
   const handleWizardReset = () => {
     setErrors({})
@@ -197,17 +190,16 @@ export const Wizard = ({ onConsultation }: WizardProps) => {
     >
       {WIZARD_STEPS.map((step, i) => {
         const stepNum = i + 1
-        const isActive = stepNum <= wizardStep
+        const isReached = stepNum <= wizardStep
         const isCurrent = stepNum === wizardStep
-        const isClickable = stepNum <= wizardStep
 
         return (
           <button
             key={step}
             type="button"
-            disabled={!isClickable}
+            disabled={!isReached}
             onClick={() => goToStep(stepNum)}
-            className={`${style.progressStep} ${isActive ? style['progressStep--active'] : ''} ${isCurrent ? style['progressStep--current'] : ''} ${isClickable ? style['progressStep--clickable'] : ''}`}
+            className={`${style.progressStep} ${isReached ? style['progressStep--active'] : ''} ${isCurrent ? style['progressStep--current'] : ''} ${isReached ? style['progressStep--clickable'] : ''}`}
           >
             <span>{stepNum}</span>
             <p>{step}</p>
