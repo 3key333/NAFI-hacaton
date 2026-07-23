@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { MOCK_LK_TABS, PLATFORM_FEATURES } from '@/data/landingData'
+import { fixHangingParticles } from '@/helpers/typograph'
 import { SectionTitle } from '@/components/ui/SectionTitle'
 import style from '@/pages/landingPage/landingPage.module.scss'
 
@@ -26,7 +27,7 @@ export const FeaturesSection = () => {
           {PLATFORM_FEATURES.map((item) => (
             <div key={item.title} className={style.features__card}>
               <h3>{item.title}</h3>
-              <p>{item.text}</p>
+              <p>{fixHangingParticles(item.text)}</p>
             </div>
           ))}
         </div>
@@ -48,7 +49,7 @@ export const FeaturesSection = () => {
             ))}
           </div>
           <div className={style.features__mockPanel} role="tabpanel">
-            <p>{activeContent.content}</p>
+            <p>{fixHangingParticles(activeContent.content)}</p>
             <div className={style.features__mockBars} aria-hidden="true">
               {bars.map((height, i) => (
                 <span key={i} style={{ height: `${height}%` }} />

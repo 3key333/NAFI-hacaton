@@ -60,15 +60,6 @@ export const HeroSection = ({ onConsultation }: HeroSectionProps) => {
 
         <div className={style.hero__aside}>
           <ConfiguratorPanel compact />
-          <div className={style.hero__mock}>
-            <p>Так будет выглядеть ваша панель управления и аналитики</p>
-            <div className={style.hero__mockBars}>
-              <span style={{ height: '60%' }} />
-              <span style={{ height: '85%' }} />
-              <span style={{ height: '45%' }} />
-              <span style={{ height: '72%' }} />
-            </div>
-          </div>
         </div>
       </div>
     </section>

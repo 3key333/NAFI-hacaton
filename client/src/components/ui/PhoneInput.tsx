@@ -14,11 +14,13 @@ interface PhoneInputProps {
   onChange: (value: string) => void
   error?: boolean
   id?: string
+  hidePlaceholderOnFocus?: boolean
 }
 
-export const PhoneInput = ({ value, onChange, error = false, id }: PhoneInputProps) => {
+export const PhoneInput = ({ value, onChange, error = false, id, hidePlaceholderOnFocus = false }: PhoneInputProps) => {
   const parsed = parsePhone(value)
   const [isCodeOpen, setIsCodeOpen] = useState(false)
+  const [isFocused, setIsFocused] = useState(false)
 
   const handleCodeChange = (code: CisPhoneCode) => {
     const national = formatNationalNumber(parsed.national, code)
@@ -57,9 +59,11 @@ export const PhoneInput = ({ value, onChange, error = false, id }: PhoneInputPro
         type="tel"
         inputMode="tel"
         className={style.phone__number}
-        placeholder={getNationalPlaceholder(parsed.code)}
+        placeholder={hidePlaceholderOnFocus && isFocused ? '' : getNationalPlaceholder(parsed.code)}
         value={parsed.national}
         onChange={(e) => handleNationalChange(e.target.value)}
+        onFocus={() => setIsFocused(true)}
+        onBlur={() => setIsFocused(false)}
         autoComplete="tel-national"
         aria-label="Номер телефона"
       />

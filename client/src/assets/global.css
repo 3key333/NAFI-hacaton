@@ -72,14 +72,14 @@ textarea {
 
 input::placeholder,
 textarea::placeholder {
-  color: var(--color-text-muted);
+  color: rgba(87, 87, 87, 0,4);
   opacity: 1;
 }
 
 input::-webkit-input-placeholder,
 textarea::-webkit-input-placeholder {
-  color: var(--color-text-muted);
-  -webkit-text-fill-color: var(--color-text-muted);
+  color: rgba(87, 87, 87, 0.55);
+  -webkit-text-fill-color: rgba(87, 87, 87, 0.55);
 }
 
 select {

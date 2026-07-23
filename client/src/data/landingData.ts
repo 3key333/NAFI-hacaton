@@ -32,12 +32,12 @@ export const HERO_SCENARIOS = [
   'Интеграция с HR / LMS / аттестацией',
 ]
 
-export const TRUST_LOGOS: { name: string; src?: string }[] = [
+export const TRUST_LOGOS: { name: string; src?: string; large?: boolean }[] = [
   { name: 'Красцветмет', src: '/krascvetmet.png' },
   { name: 'СКФ', src: '/SKF.png' },
   { name: 'Сбер', src: '/sber.png' },
   { name: 'Почта России', src: '/pochta-rossii.png' },
-  { name: 'Сеченовский университет', src: '/SECH_y.png' },
+  { name: 'Сеченовский университет', src: '/logo-sechenov-new-itog-05-e1633859068890.png', large: true },
   { name: 'Росатом', src: '/rosatom_logo.svg' },
 ]
 
@@ -307,7 +307,7 @@ export const CASES = [
     count: '3 000 чел. | Образование',
     result: 'Сформировали 5 групп с траекториями обучения',
     src: 'https://nafi.ru/about/clients/4170/',
-    logo: '/SECH_y.png',
+    logo: '/logo-sechenov-new-itog-05-e1633859068890.png',
     tasks: [
       'Оценили уровень цифровых компетенций ППС',
       'Выявили потребности в обучении работе с цифровыми инструментами дистанционного обучения и управления знаниями',

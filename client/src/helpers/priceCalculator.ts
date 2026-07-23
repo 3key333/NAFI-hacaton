@@ -1,5 +1,5 @@
 import { CONNECTION_OPTIONS } from '@/config/connectionConfig'
-import { USER_PRICE_TIERS } from '@/config/pricingConfig'
+import { USER_PRICE_TIERS, VAT_RATE } from '@/config/pricingConfig'
 import type { ConnectionConfig, PriceBreakdown } from '@/types'
 
 /** Фиксированные надбавки за опции (упрощённый прототип, не из официального прайса). */
@@ -16,10 +16,7 @@ const getPricePerUser = (count: number): number => {
   return tier?.price ?? USER_PRICE_TIERS[USER_PRICE_TIERS.length - 1].price
 }
 
-export const getPriceTierLabel = (count: number): string => {
-  const tier = USER_PRICE_TIERS.find((item) => count >= item.min)
-  return tier?.label ?? USER_PRICE_TIERS[USER_PRICE_TIERS.length - 1].label
-}
+export const formatUsersCountLabel = (count: number): string => `${count} чел.`
 
 export const calculatePrice = (config: ConnectionConfig): PriceBreakdown => {
   const pricePerUser = getPricePerUser(config.count)
@@ -34,12 +31,17 @@ export const calculatePrice = (config: ConnectionConfig): PriceBreakdown => {
     }))
 
   const optionsTotal = options.reduce((sum, item) => sum + item.price, 0)
+  const subtotalExVat = licenseTotal + optionsTotal
+  const vatAmount = Math.round(subtotalExVat * VAT_RATE)
+  const total = subtotalExVat + vatAmount
 
   return {
     pricePerUser,
     licenseTotal,
     options,
-    total: licenseTotal + optionsTotal,
+    subtotalExVat,
+    vatAmount,
+    total,
   }
 }
 

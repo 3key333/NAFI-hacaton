@@ -5,6 +5,9 @@ import { sanitizeNameInput } from '@/helpers/phoneFormat'
 import type { ConnectionForm, PayerType } from '@/types'
 import style from '@/components/wizard/wizard.module.scss'
 
+const PERSONAL_DATA_CONSENT_URL = 'https://it-gramota.ru/personal-data-agreement'
+const PERSONAL_DATA_POLICY_URL = 'https://it-gramota.ru/policy'
+
 interface WizardStep2Props {
   payerType: PayerType
   form: ConnectionForm
@@ -23,6 +26,9 @@ export const WizardStep2 = ({
   onSetField,
 }: WizardStep2Props) => {
   const [isPayerOpen, setIsPayerOpen] = useState(false)
+  const [isCompanyFocused, setIsCompanyFocused] = useState(false)
+
+  const companyPlaceholder = isCompanyFocused ? '' : COMPANY_PLACEHOLDERS[payerType]
 
   return (
     <div className={style.step}>
@@ -82,12 +88,16 @@ export const WizardStep2 = ({
           {errors.email && <span className={style.errorText}>{errors.email}</span>}
         </div>
         <div className={style.formField}>
-          <label>Компания</label>
+          <label>Компания *</label>
           <input
             value={form.company}
-            onChange={(e) => onSetField('company', e.target.value)}
-            placeholder={COMPANY_PLACEHOLDERS[payerType]}
+            onChange={(e) => onUpdateField('company', e.target.value)}
+            onFocus={() => setIsCompanyFocused(true)}
+            onBlur={() => setIsCompanyFocused(false)}
+            placeholder={companyPlaceholder}
+            className={errors.company ? style.error : ''}
           />
+          {errors.company && <span className={style.errorText}>{errors.company}</span>}
         </div>
         <div className={`${style.formField} ${style.formFieldFull}`}>
           <label>Телефон *</label>
@@ -95,6 +105,7 @@ export const WizardStep2 = ({
             value={form.phone}
             onChange={(value) => onUpdateField('phone', value)}
             error={Boolean(errors.phone)}
+            hidePlaceholderOnFocus
           />
           {errors.phone && <span className={style.errorText}>{errors.phone}</span>}
         </div>
@@ -109,7 +120,30 @@ export const WizardStep2 = ({
           checked={form.consent}
           onChange={(e) => onUpdateField('consent', e.target.checked)}
         />
-        <span>Согласие на обработку персональных данных *</span>
+        <span>
+          Я даю{' '}
+          <a
+            href={PERSONAL_DATA_CONSENT_URL}
+            target="_blank"
+            rel="noreferrer"
+            className={style.consentLink}
+            onClick={(e) => e.stopPropagation()}
+          >
+            согласие
+          </a>{' '}
+          на обработку персональных данных, включая файлы cookie в соответствии с №152-ФЗ «О персональных данных» от
+          27.07.2006, на условиях и для целей, определенных в{' '}
+          <a
+            href={PERSONAL_DATA_POLICY_URL}
+            target="_blank"
+            rel="noreferrer"
+            className={style.consentLink}
+            onClick={(e) => e.stopPropagation()}
+          >
+            Политике в отношении обработки персональных данных
+          </a>
+          .
+        </span>
       </label>
       {errors.consent && <span className={style.errorText}>{errors.consent}</span>}
     </div>

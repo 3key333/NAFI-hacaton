@@ -149,7 +149,7 @@ export const ConfiguratorPanel = ({ compact = false, showBase = false }: Configu
       {compact && (
         <>
           <div className={style.panel__total}>
-            <span>Итого · без НДС</span>
+            <span>Итого · с НДС</span>
             <strong>{formatPrice(price.total)}</strong>
           </div>
           <Button className={style.panel__cta} onClick={openWizard}>

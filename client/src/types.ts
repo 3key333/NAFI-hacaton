@@ -34,6 +34,8 @@ export interface PriceBreakdown {
   pricePerUser: number
   licenseTotal: number
   options: { id: keyof ConnectionOptions; label: string; price: number }[]
+  subtotalExVat: number
+  vatAmount: number
   total: number
 }
 
