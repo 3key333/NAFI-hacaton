@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { INTEGRATIONS, MOCK_LK_TABS, PLATFORM_FEATURES } from '@/data/landingData'
+import { MOCK_LK_TABS, PLATFORM_FEATURES } from '@/data/landingData'
 import { SectionTitle } from '@/components/ui/SectionTitle'
 import style from '@/pages/landingPage/landingPage.module.scss'
 
@@ -54,15 +54,6 @@ export const FeaturesSection = () => {
                 <span key={i} style={{ height: `${height}%` }} />
               ))}
             </div>
-          </div>
-        </div>
-
-        <div className={style.features__integrationsBlock}>
-          <p className={style.features__integrationsTitle}>Возможности интеграции нашего продукта</p>
-          <div className={style.features__integrations}>
-            {INTEGRATIONS.map((item) => (
-              <span key={item} className={style.features__chip}>{item}</span>
-            ))}
           </div>
         </div>
       </div>
