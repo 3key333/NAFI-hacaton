@@ -9,8 +9,16 @@ export const WhyNafiSection = () => (
       <div className={style.why__grid}>
         {WHY_NAFI.map((item) => (
           <div key={item.title} className={style.why__card}>
-            <h3>{item.title}</h3>
-            <p>{item.text}</p>
+
+            <div className={style.why__card_text}>
+              <h3>{item.title}</h3>
+            </div>
+
+            <div className={style.why__card_image}>
+              <p>{item.text}</p>
+              <img src={item.src} alt="" />
+            </div>
+
           </div>
         ))}
       </div>
