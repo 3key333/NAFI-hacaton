@@ -12,3 +12,5 @@ export const USER_PRICE_TIERS = [
   { min: 501, price: 370, label: '501–4000 чел.' },
   { min: 1, price: 390, label: 'до 500 чел.' },
 ] as const
+
+export const VAT_RATE = 0.05

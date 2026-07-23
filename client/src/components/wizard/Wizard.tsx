@@ -120,6 +120,7 @@ export const Wizard = ({ onConsultation }: WizardProps) => {
           <WizardStep3
             config={config}
             price={price}
+            company={form.company}
             contractAccepted={contractAccepted}
             errors={errors}
             onContractChange={handleContractChange}
@@ -176,7 +177,7 @@ export const Wizard = ({ onConsultation }: WizardProps) => {
       </ul>
 
       <div className={style.sidebarPrice}>
-        <span>Итого · без НДС</span>
+        <span>Итого · с НДС</span>
         <strong>{formatPrice(price.total)}</strong>
         <p>{config.count} тестируемых</p>
       </div>
@@ -228,10 +229,17 @@ export const Wizard = ({ onConsultation }: WizardProps) => {
             {wizardStep < TOTAL_STEPS && (
               <div className={style.wizard__actions}>
                 {wizardStep > 1 && <Button variant="secondary" onClick={prevStep}>Назад</Button>}
+                {wizardStep === 1 && (
+                  <button className={style.consultLink} onClick={onConsultation}>
+                    Параметры не подходят? Получить консультацию
+                  </button>
+                )}
                 <Button onClick={nextStep}>{wizardStep === 4 ? 'Оплатить' : 'Далее'}</Button>
-                <button className={style.consultLink} onClick={onConsultation}>
-                  Параметры не подходят? Получить консультацию
-                </button>
+                {wizardStep > 1 && (
+                  <button className={style.consultLink} onClick={onConsultation}>
+                    Параметры не подходят? Получить консультацию
+                  </button>
+                )}
               </div>
             )}
           </div>

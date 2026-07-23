@@ -16,7 +16,7 @@ export const CasesSection = () => (
 
               <div className={style.cases__company}>
                 <div
-                  className={`${style.cases__logo} ${style['cases__logo--mobile']} ${item.logo.includes('SECH') ? style['cases__logo--large'] : ''}`}
+                  className={`${style.cases__logo} ${style['cases__logo--mobile']} ${item.logo.includes('sechenov') ? style['cases__logo--large'] : ''}`}
                 >
                   <img src={item.logo} alt={item.org} loading="lazy" />
                 </div>
@@ -33,7 +33,7 @@ export const CasesSection = () => (
             </div>
 
             <div
-              className={`${style.cases__logo} ${style['cases__logo--desktop']} ${item.logo.includes('SECH') ? style['cases__logo--large'] : ''}`}
+              className={`${style.cases__logo} ${style['cases__logo--desktop']} ${item.logo.includes('sechenov') ? style['cases__logo--large'] : ''}`}
             >
               <img src={item.logo} alt={item.org} loading="lazy" />
             </div>

@@ -1,4 +1,5 @@
 import { BENEFITS } from '@/data/landingData'
+import { fixHangingParticles } from '@/helpers/typograph'
 import { useConnection } from '@/redux/hooks/useConnection'
 import { Button } from '@/components/ui/Button'
 import { SectionTitle } from '@/components/ui/SectionTitle'
@@ -15,7 +16,7 @@ export const BenefitsSection = () => {
           {BENEFITS.map((item) => (
             <div key={item.title} className={style.benefits__card}>
               <h3>{item.title}</h3>
-              <p>{item.text}</p>
+              <p>{fixHangingParticles(item.text)}</p>
             </div>
           ))}
         </div>

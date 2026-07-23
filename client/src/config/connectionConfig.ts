@@ -84,7 +84,7 @@ export const DEFAULT_CONNECTION_CONFIG: ConnectionConfig = {
   },
 }
 
-export const MIN_USER_COUNT = 10
+export const MIN_USER_COUNT = 3
 export const MAX_USER_COUNT = 100_000
 export const COUNT_PRESETS = [50, 100, 500, 1000] as const
 

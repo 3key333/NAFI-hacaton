@@ -20,7 +20,6 @@ export const TrustSection = () => {
 
   useEffect(() => {
     const id = window.setInterval(() => {
-      if (window.innerWidth > 768) return
       setWithTransition(true)
       setIndex((prev) => prev + 1)
     }, SLIDE_INTERVAL_MS)
@@ -74,18 +73,6 @@ export const TrustSection = () => {
       <div className="container">
         <SectionTitle title="Нам доверяют" subtitle="Крупные компании и государственные организации" />
 
-        <div className={style.trust__logos}>
-          {TRUST_LOGOS.map((logo) => (
-            <div key={logo.name} className={style.trust__logo}>
-              {logo.src ? (
-                <img src={logo.src} alt={logo.name} loading="lazy" />
-              ) : (
-                <span>{logo.name}</span>
-              )}
-            </div>
-          ))}
-        </div>
-
         <div className={style.trust__slider}>
           <div className={style.trust__sliderRow}>
             <button
@@ -105,7 +92,9 @@ export const TrustSection = () => {
               >
                 {LOOP_SLIDES.map((logo, slideIndex) => (
                   <div key={`${logo.name}-${slideIndex}`} className={style.trust__slide}>
-                    <div className={style.trust__logo}>
+                    <div
+                      className={`${style.trust__logo} ${logo.large ? style['trust__logo--large'] : ''}`}
+                    >
                       {logo.src ? (
                         <img src={logo.src} alt={logo.name} loading="lazy" />
                       ) : (
