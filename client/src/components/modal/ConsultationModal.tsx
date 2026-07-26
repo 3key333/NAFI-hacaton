@@ -1,17 +1,14 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import {
-  AUDIENCE_OPTIONS,
-  COMPANY_PLACEHOLDERS,
-  DEFAULT_PAYER_TYPE,
-  PAYER_TYPE_OPTIONS,
-  createEmptyConnectionForm,
-} from '@/config/connectionConfig'
+import { createEmptyConnectionForm } from '@/config/connectionConfig'
 import { Button } from '@/components/ui/Button'
 import { PhoneInput } from '@/components/ui/PhoneInput'
 import { sanitizeNameInput } from '@/helpers/phoneFormat'
 import { validateConnectionForm } from '@/helpers/validateForm'
-import type { ConnectionForm, PayerType } from '@/types'
+import type { ConnectionForm } from '@/types'
 import style from './consultationModal.module.scss'
+
+const PERSONAL_DATA_CONSENT_URL = 'https://it-gramota.ru/personal-data-agreement'
+const PERSONAL_DATA_POLICY_URL = 'https://it-gramota.ru/policy'
 
 interface ConsultationModalProps {
   isOpen: boolean
@@ -20,12 +17,9 @@ interface ConsultationModalProps {
 
 export const ConsultationModal = ({ isOpen, onClose }: ConsultationModalProps) => {
   const [form, setForm] = useState<ConnectionForm>(createEmptyConnectionForm())
-  const [payerType, setPayerType] = useState<PayerType>(DEFAULT_PAYER_TYPE)
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [success, setSuccess] = useState(false)
   const [loading, setLoading] = useState(false)
-  const [isPayerOpen, setIsPayerOpen] = useState(false)
-  const [isOrgOpen, setIsOrgOpen] = useState(false)
   const submitTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const clearSubmitTimer = () => {
@@ -39,12 +33,9 @@ export const ConsultationModal = ({ isOpen, onClose }: ConsultationModalProps) =
     clearSubmitTimer()
     onClose()
     setForm(createEmptyConnectionForm())
-    setPayerType(DEFAULT_PAYER_TYPE)
     setErrors({})
     setSuccess(false)
     setLoading(false)
-    setIsPayerOpen(false)
-    setIsOrgOpen(false)
   }, [onClose])
 
   useEffect(() => {
@@ -72,7 +63,7 @@ export const ConsultationModal = ({ isOpen, onClose }: ConsultationModalProps) =
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    const validation = validateConnectionForm(form)
+    const validation = validateConnectionForm(form, { requireCompany: false })
     if (Object.keys(validation).length) {
       setErrors(validation)
       return
@@ -106,26 +97,6 @@ export const ConsultationModal = ({ isOpen, onClose }: ConsultationModalProps) =
             <p className={style.modal__subtitle}>Заполните форму — мы поможем подобрать решение</p>
 
             <form className={style.form} onSubmit={handleSubmit} noValidate>
-              <div className={style.form__field}>
-                <label>Тип плательщика</label>
-                <select
-                  value={payerType}
-                  className={isPayerOpen ? style['form__select--open'] : undefined}
-                  onClick={() => setIsPayerOpen((open) => !open)}
-                  onBlur={() => setIsPayerOpen(false)}
-                  onChange={(e) => {
-                    setPayerType(e.target.value as PayerType)
-                    setIsPayerOpen(false)
-                  }}
-                >
-                  {PAYER_TYPE_OPTIONS.map((item) => (
-                    <option key={item.id} value={item.id}>
-                      {item.label}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
               <div className={style.form__row}>
                 <div className={style.form__field}>
                   <label>Имя *</label>
@@ -166,7 +137,7 @@ export const ConsultationModal = ({ isOpen, onClose }: ConsultationModalProps) =
                 <input
                   value={form.company}
                   onChange={(e) => setField('company', e.target.value)}
-                  placeholder={COMPANY_PLACEHOLDERS[payerType]}
+                  placeholder='ООО "Ромашка"'
                 />
               </div>
 
@@ -181,26 +152,6 @@ export const ConsultationModal = ({ isOpen, onClose }: ConsultationModalProps) =
               </div>
 
               <div className={style.form__field}>
-                <label>Тип организации</label>
-                <select
-                  value={form.orgType}
-                  className={isOrgOpen ? style['form__select--open'] : undefined}
-                  onClick={() => setIsOrgOpen((open) => !open)}
-                  onBlur={() => setIsOrgOpen(false)}
-                  onChange={(e) => {
-                    setField('orgType', e.target.value)
-                    setIsOrgOpen(false)
-                  }}
-                >
-                  {AUDIENCE_OPTIONS.map((option) => (
-                    <option key={option.id} value={option.id}>
-                      {option.label}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div className={style.form__field}>
                 <label>Комментарий</label>
                 <textarea rows={3} value={form.comment} onChange={(e) => setField('comment', e.target.value)} />
               </div>
@@ -211,7 +162,30 @@ export const ConsultationModal = ({ isOpen, onClose }: ConsultationModalProps) =
                   checked={form.consent}
                   onChange={(e) => setField('consent', e.target.checked)}
                 />
-                <span>Согласие на обработку персональных данных *</span>
+                <span>
+                  Я даю{' '}
+                  <a
+                    href={PERSONAL_DATA_CONSENT_URL}
+                    target="_blank"
+                    rel="noreferrer"
+                    className={style.form__consentLink}
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    согласие
+                  </a>{' '}
+                  на обработку персональных данных, включая файлы cookie в соответствии с №152-ФЗ «О персональных данных» от
+                  27.07.2006, на условиях и для целей, определенных в{' '}
+                  <a
+                    href={PERSONAL_DATA_POLICY_URL}
+                    target="_blank"
+                    rel="noreferrer"
+                    className={style.form__consentLink}
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    Политике в отношении обработки персональных данных
+                  </a>
+                  .
+                </span>
               </label>
               {errors.consent && <span className={style.form__error}>{errors.consent}</span>}
 

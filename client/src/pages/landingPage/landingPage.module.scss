@@ -704,6 +704,12 @@
       transition: height 0.45s ease;
     }
   }
+
+  &__mockCta {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
 }
 
 .competencies {
@@ -861,11 +867,6 @@
     opacity: 0;
     visibility: hidden;
     pointer-events: none;
-
-    .competencies__icon {
-      position: static;
-      opacity: 1;
-    }
 
     h3 {
       font-size: 14px;
@@ -1067,6 +1068,20 @@
     color: var(--color-text-muted);
     line-height: 1.6;
   }
+
+  &__link {
+    padding: 0;
+    border: none;
+    background: none;
+    font: inherit;
+    color: var(--color-black);
+    text-decoration: underline;
+    cursor: pointer;
+
+    &:hover {
+      color: var(--color-dark);
+    }
+  }
 }
 
 .ctaBanner {
@@ -1083,14 +1098,17 @@
 
     p {
       margin-bottom: 8px;
-      opacity: 0.85;
-      color: var(--color-gray);
+      color: rgba(255, 255, 255, 0.72);
     }
 
     .section__cta {
       > button:first-of-type {
         background: var(--color-primary);
         color: var(--color-black);
+
+        &:hover:not(:disabled) {
+          background: var(--color-primary-dark);
+        }
       }
 
       > button:last-of-type {
@@ -1185,10 +1203,22 @@
     gap: 8px;
     font-size: 13px;
     color: var(--color-text-muted);
-    align-items: center;
+    align-items: flex-start;
+    line-height: 1.4;
 
     input {
+      margin-top: 2px;
+      flex-shrink: 0;
       accent-color: var(--color-primary);
+    }
+  }
+
+  &__consentLink {
+    color: #4a90d9;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
     }
   }
 }

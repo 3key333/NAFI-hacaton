@@ -40,9 +40,6 @@ export const AUDIENCE_SEGMENTS: {
   },
 ]
 
-/** Короткие названия — для select и конфигуратора. */
-export const AUDIENCE_OPTIONS = AUDIENCE_SEGMENTS.map(({ id, label }) => ({ id, label }))
-
 export const AUDIENCE_LABELS: Record<AudienceType, string> = Object.fromEntries(
   AUDIENCE_SEGMENTS.map(({ id, label }) => [id, label]),
 ) as Record<AudienceType, string>
@@ -67,7 +64,6 @@ export const DEFAULT_CONNECTION_FORM: ConnectionForm = {
   company: '',
   phone: '',
   comment: '',
-  orgType: 'medium',
   consent: false,
 }
 

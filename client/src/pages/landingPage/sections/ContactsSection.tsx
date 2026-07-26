@@ -6,6 +6,9 @@ import { SectionTitle } from '@/components/ui/SectionTitle'
 import type { ConnectionForm } from '@/types'
 import style from '@/pages/landingPage/landingPage.module.scss'
 
+const PERSONAL_DATA_CONSENT_URL = 'https://it-gramota.ru/personal-data-agreement'
+const PERSONAL_DATA_POLICY_URL = 'https://it-gramota.ru/policy'
+
 export const ContactsSection = () => {
   const [form, setForm] = useState<ConnectionForm>(createEmptyConnectionForm())
   const [errors, setErrors] = useState<Record<string, string>>({})
@@ -97,7 +100,28 @@ export const ContactsSection = () => {
                   checked={form.consent}
                   onChange={(e) => setField('consent', e.target.checked)}
                 />
-                <span>Согласие на обработку ПДн *</span>
+                <span>
+                  Я ознакомлен(а) с{' '}
+                  <a
+                    href={PERSONAL_DATA_POLICY_URL}
+                    target="_blank"
+                    rel="noreferrer"
+                    className={style.contacts__consentLink}
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    политикой
+                  </a>{' '}
+                  и даю{' '}
+                  <a
+                    href={PERSONAL_DATA_CONSENT_URL}
+                    target="_blank"
+                    rel="noreferrer"
+                    className={style.contacts__consentLink}
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    согласие на обработку персональных данных
+                  </a>
+                </span>
               </label>
               {errors.consent && <span className={style.contacts__error}>{errors.consent}</span>}
               <Button type="submit" disabled={loading}>

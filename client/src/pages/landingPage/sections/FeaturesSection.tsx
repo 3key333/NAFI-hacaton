@@ -1,5 +1,7 @@
 import { useState } from 'react'
+import { Button } from '@/components/ui/Button'
 import { MOCK_LK_TABS, PLATFORM_FEATURES } from '@/data/landingData'
+import { navigateToPanel } from '@/helpers/navigation'
 import { fixHangingParticles } from '@/helpers/typograph'
 import { SectionTitle } from '@/components/ui/SectionTitle'
 import style from '@/pages/landingPage/landingPage.module.scss'
@@ -55,6 +57,11 @@ export const FeaturesSection = () => {
                 <span key={i} style={{ height: `${height}%` }} />
               ))}
             </div>
+          </div>
+          <div className={style.features__mockCta}>
+            <Button variant="secondary" onClick={navigateToPanel}>
+              Перейти к панели управления
+            </Button>
           </div>
         </div>
       </div>

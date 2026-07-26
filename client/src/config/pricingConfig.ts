@@ -8,9 +8,9 @@
  * - более 4000 чел. → 340 ₽
  */
 export const USER_PRICE_TIERS = [
-  { min: 4001, price: 340, label: 'более 4000 чел.' },
-  { min: 501, price: 370, label: '501–4000 чел.' },
-  { min: 1, price: 390, label: 'до 500 чел.' },
+  { min: 4001, price: 340 },
+  { min: 501, price: 370 },
+  { min: 1, price: 390 },
 ] as const
 
 export const VAT_RATE = 0.05

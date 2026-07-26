@@ -11,6 +11,7 @@ import {
   toggleOption as toggleOptionAction,
 } from '@/redux/slices/connectionSlice'
 import type { AppDispatch, RootState } from '@/redux/store'
+import { isPanelRoute, navigateToHome } from '@/helpers/navigation'
 import { scrollToSection } from '@/helpers/scrollToSection'
 import type {
   AudienceType,
@@ -40,6 +41,13 @@ export const useConnection = () => {
     if (wizardStep === 5) {
       dispatch(resetWizardAction())
     }
+
+    if (isPanelRoute()) {
+      navigateToHome()
+      setTimeout(() => scrollToSection('wizard'), 120)
+      return
+    }
+
     scrollToWizard()
   }
 

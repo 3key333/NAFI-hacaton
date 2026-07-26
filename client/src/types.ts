@@ -26,7 +26,6 @@ export interface ConnectionForm {
   company: string
   phone: string
   comment: string
-  orgType: string
   consent: boolean
 }
 

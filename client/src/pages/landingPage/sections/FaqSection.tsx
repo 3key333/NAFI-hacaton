@@ -1,9 +1,33 @@
-import { useState } from 'react'
+import { useState, type ReactNode } from 'react'
 import { FAQ_ITEMS } from '@/data/landingData'
 import { SectionTitle } from '@/components/ui/SectionTitle'
 import style from '@/pages/landingPage/landingPage.module.scss'
 
-export const FaqSection = () => {
+interface FaqSectionProps {
+  onConsultation: () => void
+}
+
+const CONSULTATION_LINK_LABEL = 'Получить консультацию'
+
+const renderAnswer = (text: string, onConsultation: () => void): ReactNode => {
+  const index = text.indexOf(CONSULTATION_LINK_LABEL)
+  if (index === -1) return text
+
+  const before = text.slice(0, index)
+  const after = text.slice(index + CONSULTATION_LINK_LABEL.length)
+
+  return (
+    <>
+      {before}
+      <button type="button" className={style.faq__link} onClick={onConsultation}>
+        {CONSULTATION_LINK_LABEL}
+      </button>
+      {after}
+    </>
+  )
+}
+
+export const FaqSection = ({ onConsultation }: FaqSectionProps) => {
   const [openFaq, setOpenFaq] = useState<number | null>(0)
 
   return (
@@ -17,7 +41,9 @@ export const FaqSection = () => {
                 {item.q}
                 <span>{openFaq === i ? '−' : '+'}</span>
               </button>
-              {openFaq === i && <p className={style.faq__answer}>{item.a}</p>}
+              {openFaq === i && (
+                <p className={style.faq__answer}>{renderAnswer(item.a, onConsultation)}</p>
+              )}
             </div>
           ))}
         </div>
