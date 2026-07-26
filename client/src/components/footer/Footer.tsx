@@ -30,8 +30,8 @@ export const Footer = () => {
           <p>welcome@it-gramota.ru</p>
           <p>+7 (495) 152-08-87</p>
           <div className={style.footer__social}>
-            <a href="https://t.me/nafi_ru" target="_blank" rel="noreferrer" aria-label="Telegram">TG</a>
-            <a href="https://vk.com/nafi_ru" target="_blank" rel="noreferrer" aria-label="ВКонтакте">VK</a>
+            <a href="https://t.me/nafi_research" target="_blank" rel="noreferrer" aria-label="Telegram">TG</a>
+            <a href="https://vk.com/nafi_research" target="_blank" rel="noreferrer" aria-label="ВКонтакте">VK</a>
             <a href="https://nafi.ru" target="_blank" rel="noreferrer" aria-label="Сайт НАФИ">Web</a>
           </div>
         </div>

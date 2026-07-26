@@ -28,7 +28,7 @@ export const LandingSections = ({ onConsultation }: LandingSectionsProps) => (
     <FeaturesSection />
     <CompetenciesSection />
     <CasesSection />
-    <FaqSection />
+    <FaqSection onConsultation={onConsultation} />
     <CtaBannerSection onConsultation={onConsultation} />
     <ContactsSection />
   </>

@@ -13,7 +13,7 @@ export const CtaBannerSection = ({ onConsultation }: CtaBannerSectionProps) => {
     <section className={`section ${style.ctaBanner}`}>
       <div className={`container ${style.ctaBanner__inner}`}>
         <h2>Готовы подключить платформу?</h2>
-        <p>Готовое решение · быстрый запуск · понятный путь покупки</p>
+        <p>Готовое решение · Быстрый запуск · Понятный путь покупки</p>
         <div className={style.section__cta}>
           <Button onClick={openWizard}>Подключить платформу</Button>
           <Button variant="secondary" onClick={onConsultation}>Получить консультацию</Button>

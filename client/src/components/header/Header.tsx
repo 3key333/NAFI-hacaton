@@ -1,6 +1,7 @@
-import { useState } from 'react'
+import { useState, type MouseEvent } from 'react'
 import { Button } from '@/components/ui/Button'
 import { NAV_LINKS } from '@/data/landingData'
+import { isPanelRoute, navigateToHome } from '@/helpers/navigation'
 import { scrollToSection } from '@/helpers/scrollToSection'
 import { useConnection } from '@/redux/hooks/useConnection'
 import style from './header.module.scss'
@@ -15,13 +16,30 @@ export const Header = ({ onConsultation }: HeaderProps) => {
 
   const handleNav = (href: string) => {
     setMenuOpen(false)
-    scrollToSection(href.replace('#', ''))
+    const id = href.replace('#', '')
+
+    if (isPanelRoute()) {
+      navigateToHome()
+      requestAnimationFrame(() => scrollToSection(id))
+      return
+    }
+
+    scrollToSection(id)
+  }
+
+  const handleLogoClick = (e: MouseEvent) => {
+    e.preventDefault()
+    if (isPanelRoute()) {
+      navigateToHome()
+      return
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
   return (
     <header className={style.header}>
       <div className={`container ${style.header__inner}`}>
-        <a href="#" className={style.header__logo} onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }) }}>
+        <a href="#" className={style.header__logo} onClick={handleLogoClick}>
           <img src="/city.svg" alt="Цифровой гражданин" className={style.header__logoImg} />
           <span>Цифровой гражданин</span>
         </a>

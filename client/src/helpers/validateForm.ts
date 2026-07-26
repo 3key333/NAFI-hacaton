@@ -51,7 +51,11 @@ const validateEmailField = (email: string): string | undefined => {
   return undefined
 }
 
-export const validateConnectionForm = (form: ConnectionForm): FormErrors => {
+export const validateConnectionForm = (
+  form: ConnectionForm,
+  options: { requireCompany?: boolean } = {},
+): FormErrors => {
+  const { requireCompany = true } = options
   const errors: FormErrors = {}
 
   const firstNameError = validatePersonName(form.firstName, 'Имя')
@@ -69,10 +73,12 @@ export const validateConnectionForm = (form: ConnectionForm): FormErrors => {
     errors.phone = 'Введите полный номер (+7, +375, +380 и др. СНГ)'
   }
 
-  if (!form.company.trim()) {
-    errors.company = 'Введите название компании'
-  } else if (form.company.trim().length < 3) {
-    errors.company = 'Минимум 3 символа'
+  if (requireCompany) {
+    if (!form.company.trim()) {
+      errors.company = 'Введите название компании'
+    } else if (form.company.trim().length < 3) {
+      errors.company = 'Минимум 3 символа'
+    }
   }
 
   if (!form.consent) errors.consent = 'Необходимо согласие на обработку ПДн'
