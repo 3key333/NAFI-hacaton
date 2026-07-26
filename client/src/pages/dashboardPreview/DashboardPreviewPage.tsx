@@ -285,7 +285,7 @@ export const DashboardPreviewPage = ({ onConsultation }: DashboardPreviewPagePro
       <div className={style.page__overlay} aria-hidden="true" />
       <div className={`container ${style.page__content}`}>
         <button type="button" className={style.back} onClick={handleBack}>
-          ← Назад на лендинг
+          ← Вернуться на главную
         </button>
 
         <div className={style.intro}>
