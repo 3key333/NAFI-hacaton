@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import {
   CONNECTION_OPTIONS,
   COUNT_PRESETS,
@@ -23,12 +23,6 @@ export const ConfiguratorPanel = ({ compact = false, showBase = false }: Configu
   const [countInput, setCountInput] = useState(String(config.count))
   const [isCountFocused, setIsCountFocused] = useState(false)
   const price = calculatePrice(config)
-
-  useEffect(() => {
-    if (!isCountFocused) {
-      setCountInput(String(config.count))
-    }
-  }, [config.count, isCountFocused])
 
   const displayValue = isCountFocused ? countInput : String(config.count)
 

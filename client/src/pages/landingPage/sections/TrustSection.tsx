@@ -26,7 +26,9 @@ export const TrustSection = () => {
   const jumpingRef = useRef(false)
   const animatingRef = useRef(false)
 
-  indexRef.current = index
+  useEffect(() => {
+    indexRef.current = index
+  }, [index])
 
   useEffect(() => {
     const id = window.setInterval(() => {

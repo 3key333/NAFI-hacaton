@@ -1,4 +1,4 @@
-import { AUDIENCE_TABS, HERO_BADGES, HERO_SCENARIOS } from '@/data/landingData'
+import { HERO_BADGES, HERO_SCENARIOS } from '@/data/landingData'
 import { useConnection } from '@/redux/hooks/useConnection'
 import { Button } from '@/components/ui/Button'
 import { ConfiguratorPanel } from '@/components/configurator/ConfiguratorPanel'
