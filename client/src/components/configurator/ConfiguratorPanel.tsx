@@ -1,6 +1,5 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import {
-  AUDIENCE_LABELS,
   CONNECTION_OPTIONS,
   COUNT_PRESETS,
   MAX_USER_COUNT,
@@ -20,17 +19,10 @@ interface ConfiguratorPanelProps {
 const clampCount = (value: number) => Math.min(MAX_USER_COUNT, Math.max(MIN_USER_COUNT, value))
 
 export const ConfiguratorPanel = ({ compact = false, showBase = false }: ConfiguratorPanelProps) => {
-  const { config, setCount, setAudienceWithRecommendations, toggleOption, openWizard } = useConnection()
+  const { config, setCount, toggleOption, openWizard } = useConnection()
   const [countInput, setCountInput] = useState(String(config.count))
   const [isCountFocused, setIsCountFocused] = useState(false)
-  const [isAudienceOpen, setIsAudienceOpen] = useState(false)
   const price = calculatePrice(config)
-
-  useEffect(() => {
-    if (!isCountFocused) {
-      setCountInput(String(config.count))
-    }
-  }, [config.count, isCountFocused])
 
   const displayValue = isCountFocused ? countInput : String(config.count)
 
@@ -99,24 +91,6 @@ export const ConfiguratorPanel = ({ compact = false, showBase = false }: Configu
             </button>
           ))}
         </div>
-      </div>
-
-      <div className={style.panel__field}>
-        <label>Тип организации</label>
-        <select
-          value={config.audience}
-          className={isAudienceOpen ? style['panel__select--open'] : undefined}
-          onClick={() => setIsAudienceOpen((open) => !open)}
-          onBlur={() => setIsAudienceOpen(false)}
-          onChange={(e) => {
-            setAudienceWithRecommendations(e.target.value as typeof config.audience)
-            setIsAudienceOpen(false)
-          }}
-        >
-          {Object.entries(AUDIENCE_LABELS).map(([key, label]) => (
-            <option key={key} value={key}>{label}</option>
-          ))}
-        </select>
       </div>
 
       {!compact && (

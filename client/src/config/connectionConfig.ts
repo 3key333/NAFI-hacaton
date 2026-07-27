@@ -40,15 +40,6 @@ export const AUDIENCE_SEGMENTS: {
   },
 ]
 
-export const AUDIENCE_LABELS: Record<AudienceType, string> = Object.fromEntries(
-  AUDIENCE_SEGMENTS.map(({ id, label }) => [id, label]),
-) as Record<AudienceType, string>
-
-export const AUDIENCE_RECOMMENDED_OPTIONS: Record<AudienceType, (keyof ConnectionOptions)[]> =
-  Object.fromEntries(
-    AUDIENCE_SEGMENTS.map(({ id, recommendedOptions }) => [id, recommendedOptions]),
-  ) as Record<AudienceType, (keyof ConnectionOptions)[]>
-
 /** Доп. опции конфигуратора: единый источник label + price. */
 export const CONNECTION_OPTIONS = [
   { key: 'certificates' as const, label: 'Сертификаты о прохождении теста', price: 15_000 },
@@ -74,8 +65,8 @@ export const DEFAULT_CONNECTION_CONFIG: ConnectionConfig = {
   audience: 'medium',
   options: {
     certificates: false,
-    hints: true,
-    recommendations: true,
+    hints: false,
+    recommendations: false,
     api: false,
   },
 }
@@ -92,12 +83,6 @@ export const PAYER_TYPE_OPTIONS: { id: PayerType; label: string }[] = [
   { id: 'ip', label: 'ИП' },
   { id: 'legal', label: 'Юрлицо' },
 ]
-
-export const COMPANY_PLACEHOLDERS: Record<PayerType, string> = {
-  legal: 'ООО "Ромашка"',
-  individual: 'Иванов Иван Иванович',
-  ip: 'ИП Иванов И.И',
-}
 
 export const getPaymentMethodsForPayer = (payerType: PayerType): PaymentMethod[] =>
   payerType === 'individual' ? ['card'] : ['invoice']

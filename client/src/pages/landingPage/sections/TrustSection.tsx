@@ -1,10 +1,14 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState, type TransitionEvent } from 'react'
 import { TRUST_LOGOS, TRUST_STATS } from '@/data/landingData'
 import { SectionTitle } from '@/components/ui/SectionTitle'
 import style from '@/pages/landingPage/landingPage.module.scss'
 
 const SLIDE_INTERVAL_MS = 3000
 const REAL_COUNT = TRUST_LOGOS.length
+const CLONE_FIRST_INDEX = 0
+const FIRST_REAL_INDEX = 1
+const LAST_REAL_INDEX = REAL_COUNT
+const CLONE_LAST_INDEX = REAL_COUNT + 1
 
 /** [clone last, ...real, clone first] — для бесшовного цикла */
 const LOOP_SLIDES = [
@@ -14,59 +18,104 @@ const LOOP_SLIDES = [
 ]
 
 export const TrustSection = () => {
-  const [index, setIndex] = useState(1)
+  const [index, setIndex] = useState(FIRST_REAL_INDEX)
   const [withTransition, setWithTransition] = useState(true)
   const [autoKey, setAutoKey] = useState(0)
 
+  const indexRef = useRef(index)
+  const jumpingRef = useRef(false)
+  const animatingRef = useRef(false)
+
+  useEffect(() => {
+    indexRef.current = index
+  }, [index])
+
   useEffect(() => {
     const id = window.setInterval(() => {
+      if (jumpingRef.current || animatingRef.current) return
+
+      animatingRef.current = true
       setWithTransition(true)
-      setIndex((prev) => prev + 1)
+      setIndex((prev) => Math.min(prev + 1, CLONE_LAST_INDEX))
     }, SLIDE_INTERVAL_MS)
 
     return () => window.clearInterval(id)
   }, [autoKey])
 
-  const handleTransitionEnd = () => {
-    if (index === REAL_COUNT + 1) {
-      setWithTransition(false)
-      setIndex(1)
+  const finishJump = () => {
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        setWithTransition(true)
+        jumpingRef.current = false
+        animatingRef.current = false
+      })
+    })
+  }
+
+  const jumpToReal = (realIndex: number) => {
+    jumpingRef.current = true
+    animatingRef.current = true
+    setWithTransition(false)
+    setIndex(realIndex)
+    finishJump()
+  }
+
+  const handleTransitionEnd = (event: TransitionEvent<HTMLDivElement>) => {
+    if (event.target !== event.currentTarget) return
+    if (event.propertyName !== 'transform') return
+    if (jumpingRef.current) return
+
+    const current = indexRef.current
+
+    if (current === CLONE_LAST_INDEX) {
+      jumpToReal(FIRST_REAL_INDEX)
       return
     }
 
-    if (index === 0) {
-      setWithTransition(false)
-      setIndex(REAL_COUNT)
+    if (current === CLONE_FIRST_INDEX) {
+      jumpToReal(LAST_REAL_INDEX)
+      return
     }
+
+    animatingRef.current = false
   }
-
-  useEffect(() => {
-    if (withTransition) return
-    const id = window.requestAnimationFrame(() => setWithTransition(true))
-    return () => window.cancelAnimationFrame(id)
-  }, [withTransition, index])
-
-  const realIndex = (index - 1 + REAL_COUNT) % REAL_COUNT
 
   const restartAuto = () => setAutoKey((key) => key + 1)
 
   const goTo = (dotIndex: number) => {
+    if (jumpingRef.current) return
+
+    const next = dotIndex + FIRST_REAL_INDEX
+    if (next === indexRef.current) {
+      restartAuto()
+      return
+    }
+
+    animatingRef.current = true
     setWithTransition(true)
-    setIndex(dotIndex + 1)
+    setIndex(next)
     restartAuto()
   }
 
   const goPrev = () => {
+    if (jumpingRef.current || animatingRef.current) return
+
+    animatingRef.current = true
     setWithTransition(true)
-    setIndex((prev) => prev - 1)
+    setIndex((prev) => Math.max(prev - 1, CLONE_FIRST_INDEX))
     restartAuto()
   }
 
   const goNext = () => {
+    if (jumpingRef.current || animatingRef.current) return
+
+    animatingRef.current = true
     setWithTransition(true)
-    setIndex((prev) => prev + 1)
+    setIndex((prev) => Math.min(prev + 1, CLONE_LAST_INDEX))
     restartAuto()
   }
+
+  const realIndex = (index - FIRST_REAL_INDEX + REAL_COUNT) % REAL_COUNT
 
   return (
     <section className={`section section--alt ${style.trust}`}>
@@ -87,7 +136,7 @@ export const TrustSection = () => {
             <div className={style.trust__viewport}>
               <div
                 className={`${style.trust__track} ${withTransition ? style['trust__track--animate'] : ''}`}
-                style={{ transform: `translateX(-${index * 100}%)` }}
+                style={{ transform: `translate3d(-${index * 100}%, 0, 0)` }}
                 onTransitionEnd={handleTransitionEnd}
               >
                 {LOOP_SLIDES.map((logo, slideIndex) => (
@@ -96,7 +145,7 @@ export const TrustSection = () => {
                       className={`${style.trust__logo} ${logo.large ? style['trust__logo--large'] : ''}`}
                     >
                       {logo.src ? (
-                        <img src={logo.src} alt={logo.name} loading="lazy" />
+                        <img src={logo.src} alt={logo.name} decoding="async" draggable={false} />
                       ) : (
                         <span>{logo.name}</span>
                       )}

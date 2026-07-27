@@ -5,7 +5,7 @@ import { WizardStep2 } from '@/components/wizard/steps/WizardStep2'
 import { WizardStep3 } from '@/components/wizard/steps/WizardStep3'
 import { WizardStep4 } from '@/components/wizard/steps/WizardStep4'
 import { WizardStep5 } from '@/components/wizard/steps/WizardStep5'
-import { AUDIENCE_LABELS, CONNECTION_OPTIONS } from '@/config/connectionConfig'
+import { CONNECTION_OPTIONS } from '@/config/connectionConfig'
 import { BASE_FEATURES, WIZARD_STEPS } from '@/data/landingData'
 import { calculatePrice, formatPrice } from '@/helpers/priceCalculator'
 import { scrollToSection } from '@/helpers/scrollToSection'
@@ -107,10 +107,8 @@ export const Wizard = ({ onConsultation }: WizardProps) => {
       case 2:
         return (
           <WizardStep2
-            payerType={payerType}
             form={form}
             errors={errors}
-            onPayerTypeChange={setPayerType}
             onUpdateField={updateFormField}
             onSetField={setFormField}
           />
@@ -132,6 +130,7 @@ export const Wizard = ({ onConsultation }: WizardProps) => {
             payerType={payerType}
             paymentMethod={paymentMethod}
             price={price}
+            onPayerTypeChange={setPayerType}
             onPaymentMethodChange={setPaymentMethod}
           />
         )
@@ -149,7 +148,6 @@ export const Wizard = ({ onConsultation }: WizardProps) => {
           <p className={style.sidebarSummary__label}>Параметры</p>
           <ul className={style.sidebarSummary__list}>
             <li>{config.count} тестируемых</li>
-            <li>{AUDIENCE_LABELS[config.audience]}</li>
           </ul>
         </li>
 
