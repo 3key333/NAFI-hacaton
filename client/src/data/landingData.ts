@@ -29,8 +29,8 @@ export const HERO_SCENARIOS = [
 
 export const TRUST_LOGOS: { name: string; src?: string; large?: boolean }[] = [
   { name: 'Красцветмет', src: '/krascvetmet.png' },
-  { name: 'СКФ', src: '/SKF.png' },
-  { name: 'Сбер', src: '/sber.png' },
+  { name: 'СКФ', src: '/skf_new.png' },
+  { name: 'Сбер', src: '/Logo_Sberbank.svg.webp' },
   { name: 'Почта России', src: '/pochta-rossii.png' },
   { name: 'Сеченовский университет', src: '/logo-sechenov-new-itog-05-e1633859068890.png', large: true },
   { name: 'Росатом', src: '/rosatom_logo.svg' },
@@ -64,7 +64,7 @@ export const BENEFITS = [
 
 export const WIZARD_STEPS = [
   'Параметры + стоимость',
-  'Плательщик + данные',
+  'Контактные данные',
   'Договор',
   'Оплата',
   'Готово',

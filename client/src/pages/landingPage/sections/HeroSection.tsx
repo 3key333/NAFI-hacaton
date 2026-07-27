@@ -2,7 +2,6 @@ import { AUDIENCE_TABS, HERO_BADGES, HERO_SCENARIOS } from '@/data/landingData'
 import { useConnection } from '@/redux/hooks/useConnection'
 import { Button } from '@/components/ui/Button'
 import { ConfiguratorPanel } from '@/components/configurator/ConfiguratorPanel'
-import type { AudienceType } from '@/types'
 import style from '@/pages/landingPage/landingPage.module.scss'
 
 interface HeroSectionProps {
@@ -10,29 +9,12 @@ interface HeroSectionProps {
 }
 
 export const HeroSection = ({ onConsultation }: HeroSectionProps) => {
-  const { openWizard, config, setAudienceWithRecommendations } = useConnection()
-
-  const handleAudienceChange = (id: AudienceType) => {
-    setAudienceWithRecommendations(id)
-  }
+  const { openWizard } = useConnection()
 
   return (
     <section className={style.hero}>
       <div className={`container ${style.hero__grid}`}>
         <div className={style.hero__content}>
-          <div className={style.hero__chips}>
-            {AUDIENCE_TABS.map((tab) => (
-              <button
-                key={tab.id}
-                type="button"
-                className={`${style.hero__chip} ${tab.id === config.audience ? style['hero__chip--active'] : ''}`}
-                onClick={() => handleAudienceChange(tab.id)}
-              >
-                {tab.label}
-              </button>
-            ))}
-          </div>
-
           <h1>Платформа для оценки <br /> и развития цифровых компетенций ваших сотрудников</h1>
           <p className={style.hero__subtitle}>
             Готовое решение · Тестирование онлайн · Аналитика · Персональные рекомендации · База знаний

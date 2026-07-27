@@ -1,4 +1,9 @@
-import { getPaymentMethodsForPayer, PAYMENT_METHOD_OPTIONS } from '@/config/connectionConfig'
+import { useState } from 'react'
+import {
+  getPaymentMethodsForPayer,
+  PAYER_TYPE_OPTIONS,
+  PAYMENT_METHOD_OPTIONS,
+} from '@/config/connectionConfig'
 import type { PayerType, PaymentMethod, PriceBreakdown } from '@/types'
 import { formatPrice } from '@/helpers/priceCalculator'
 import style from '@/components/wizard/wizard.module.scss'
@@ -7,6 +12,7 @@ interface WizardStep4Props {
   payerType: PayerType
   paymentMethod: PaymentMethod
   price: PriceBreakdown
+  onPayerTypeChange: (type: PayerType) => void
   onPaymentMethodChange: (method: PaymentMethod) => void
 }
 
@@ -14,8 +20,10 @@ export const WizardStep4 = ({
   payerType,
   paymentMethod,
   price,
+  onPayerTypeChange,
   onPaymentMethodChange,
 }: WizardStep4Props) => {
+  const [isPayerOpen, setIsPayerOpen] = useState(false)
   const allowedMethods = getPaymentMethodsForPayer(payerType)
   const availableOptions = PAYMENT_METHOD_OPTIONS.filter((item) => allowedMethods.includes(item.id))
 
@@ -26,6 +34,27 @@ export const WizardStep4 = ({
         <span>К оплате</span>
         <strong>{formatPrice(price.total)}</strong>
       </div>
+
+      <div className={style.formField}>
+        <label>Тип плательщика</label>
+        <select
+          value={payerType}
+          className={isPayerOpen ? style['formField__select--open'] : undefined}
+          onClick={() => setIsPayerOpen((open) => !open)}
+          onBlur={() => setIsPayerOpen(false)}
+          onChange={(e) => {
+            onPayerTypeChange(e.target.value as PayerType)
+            setIsPayerOpen(false)
+          }}
+        >
+          {PAYER_TYPE_OPTIONS.map((item) => (
+            <option key={item.id} value={item.id}>
+              {item.label}
+            </option>
+          ))}
+        </select>
+      </div>
+
       <p className={style.paymentHint}>
         {payerType === 'individual'
           ? 'Для физлиц доступна оплата банковской картой'

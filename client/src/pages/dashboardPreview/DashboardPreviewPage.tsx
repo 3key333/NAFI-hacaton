@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react'
 import { Button } from '@/components/ui/Button'
 import { animateCount } from '@/helpers/animateCount'
 import { navigateToHome } from '@/helpers/navigation'
+import { PANEL_VIDEO_SRC } from '@/helpers/preloadPanelVideo'
+import { fixHangingParticles } from '@/helpers/typograph'
 import { useConnection } from '@/redux/hooks/useConnection'
 import style from './dashboardPreview.module.scss'
 
@@ -71,14 +73,54 @@ const COMPETENCIES = [
 ]
 
 const TRAINING_TOPICS = [
-  { topic: 'Работа с информацией в сети', count: 7, percent: 100 },
-  { topic: 'Создание аудио, видео и мультимедиа', count: 6, percent: 85 },
-  { topic: 'Безопасность в цифровой среде', count: 5, percent: 71 },
-  { topic: 'Облачные и мобильные сервисы', count: 5, percent: 71 },
-  { topic: 'Работа с таблицами и данными', count: 0, percent: 0 },
-  { topic: 'Настройка ПО и рабочих мест', count: 10, percent: 100 },
-  { topic: 'Коммуникация в цифровых каналах', count: 5, percent: 50 },
-  { topic: 'Создание текстовых документов', count: 0, percent: 15 },
+  {
+    topic: 'Работа с информацией в сети',
+    count: 7,
+    percent: 100,
+    tip: 'Научите сотрудников проверять источники, сравнивать данные из разных сайтов и распознавать недостоверную информацию.',
+  },
+  {
+    topic: 'Создание аудио, видео и мультимедиа',
+    count: 6,
+    percent: 85,
+    tip: 'Дайте практику по базовому монтажу, выбору форматов и подготовке медиафайлов для рабочих задач.',
+  },
+  {
+    topic: 'Безопасность в цифровой среде',
+    count: 5,
+    percent: 71,
+    tip: 'Усильте навыки работы с паролями, распознавания фишинга и безопасного обмена корпоративными данными.',
+  },
+  {
+    topic: 'Облачные и мобильные сервисы',
+    count: 5,
+    percent: 71,
+    tip: 'Покажите, как синхронизировать файлы, настраивать доступ и работать с облачными сервисами без потери данных.',
+  },
+  {
+    topic: 'Работа с таблицами и данными',
+    count: 0,
+    percent: 0,
+    tip: 'Закрепите формулы, фильтры и сводные таблицы — это ускорит анализ данных в повседневной работе.',
+  },
+  {
+    topic: 'Настройка ПО и рабочих мест',
+    count: 10,
+    percent: 100,
+    tip: 'Обучите самостоятельной установке обновлений, настройке рабочего ПО и базовой диагностике сбоев.',
+  },
+  {
+    topic: 'Коммуникация в цифровых каналах',
+    count: 5,
+    percent: 50,
+    tip: 'Разберите правила деловой переписки, этикет в мессенджерах и совместную работу в общих чатах и документах.',
+  },
+  {
+    topic: 'Создание текстовых документов',
+    count: 0,
+    percent: 15,
+    tip: 'Потренируйте оформление документов: стили, структуру, шаблоны и совместное редактирование.',
+  },
 ]
 
 const EMPLOYEE_AXES = [
@@ -98,6 +140,13 @@ const LEVEL_LEGEND = [
 const getLevelColor = (score: number) => {
   if (score >= 70) return '#5cb85c'
   if (score >= 50) return '#f0a04b'
+  return '#e53935'
+}
+
+/** Цвет бейджа процента: 0–50 красный, 50–70 жёлтый, ≥70 зелёный. */
+const getErrorRateColor = (percent: number) => {
+  if (percent >= 70) return '#5cb85c'
+  if (percent >= 50) return '#f0a04b'
   return '#e53935'
 }
 
@@ -135,6 +184,89 @@ const GRID_LEVELS = [20, 40, 60, 80, 100]
 
 interface DashboardPreviewPageProps {
   onConsultation: () => void
+}
+
+const TrainingTopicsPanel = () => {
+  const [expanded, setExpanded] = useState<Set<string>>(new Set())
+
+  const toggleExpanded = (topic: string) => {
+    setExpanded((prev) => {
+      const next = new Set(prev)
+      if (next.has(topic)) next.delete(topic)
+      else next.add(topic)
+      return next
+    })
+  }
+
+  return (
+    <div className={style.panel} role="tabpanel">
+      <h2>Чему учить сотрудников</h2>
+      <div className={style.trainList}>
+        {TRAINING_TOPICS.map((row) => {
+          const isOpen = expanded.has(row.topic)
+          const badgeColor = getErrorRateColor(row.percent)
+
+          return (
+            <div
+              key={row.topic}
+              className={`${style.trainRow} ${isOpen ? style['trainRow--open'] : ''}`}
+            >
+              <div className={style.trainRow__main}>
+                <button
+                  type="button"
+                  className={style.trainRow__toggle}
+                  onClick={() => toggleExpanded(row.topic)}
+                  aria-expanded={isOpen}
+                  aria-label={isOpen ? 'Свернуть' : 'Развернуть'}
+                >
+                  <img
+                    src={isOpen ? '/top-arrow-svgrepo-com.svg' : '/bottom-arrow-svgrepo-com.svg'}
+                    alt=""
+                    aria-hidden="true"
+                  />
+                </button>
+                <div className={style.trainRow__topicBlock}>
+                  <span className={style.trainRow__fieldLabel}>Тема</span>
+                  <span className={style.trainRow__topic}>{row.topic}</span>
+                </div>
+              </div>
+
+              {isOpen && (
+                <>
+                  <hr className={style.trainRow__divider} />
+                  <div className={style.trainRow__details}>
+                    <div className={style.trainRow__metric}>
+                      <span className={style.trainRow__fieldLabel}>Сколько человек ошиблось</span>
+                      <span className={style.trainRow__count}>{row.count}</span>
+                    </div>
+                    <div className={style.trainRow__metric}>
+                      <span className={style.trainRow__fieldLabel}>
+                        Процентное соотношение от всех прошедших тестирование
+                      </span>
+                      <span
+                        className={style.trainRow__badge}
+                        style={{ background: badgeColor }}
+                      >
+                        {row.percent}%
+                      </span>
+                    </div>
+                  </div>
+                  <hr className={style.trainRow__divider} />
+                  <div className={style.trainRow__tip}>
+                    <span className={style.trainRow__fieldLabel}>Рекомендация</span>
+                    <p>{fixHangingParticles(row.tip)}</p>
+                  </div>
+                </>
+              )}
+            </div>
+          )
+        })}
+      </div>
+      <p className={style.footnote}>
+        Вы сможете подобрать актуальные образовательные программы по цифровой грамотности.
+      </p>
+    </div>
+  )
 }
 
 const CompanyReportPanel = () => {
@@ -266,6 +398,7 @@ const CompanyReportPanel = () => {
 export const DashboardPreviewPage = ({ onConsultation }: DashboardPreviewPageProps) => {
   const { openWizard } = useConnection()
   const [activeTab, setActiveTab] = useState<TabId>('company')
+  const [videoReady, setVideoReady] = useState(false)
 
   const handleBack = () => {
     navigateToHome()
@@ -274,13 +407,16 @@ export const DashboardPreviewPage = ({ onConsultation }: DashboardPreviewPagePro
   return (
     <div className={style.page}>
       <video
-        className={style.page__video}
-        src="/hero-bg.mp4"
+        className={`${style.page__video} ${videoReady ? style['page__video--ready'] : ''}`}
+        src={PANEL_VIDEO_SRC}
         autoPlay
         muted
         loop
         playsInline
+        preload="auto"
         aria-hidden="true"
+        onCanPlay={() => setVideoReady(true)}
+        onPlaying={() => setVideoReady(true)}
       />
       <div className={style.page__overlay} aria-hidden="true" />
       <div className={`container ${style.page__content}`}>
@@ -453,32 +589,7 @@ export const DashboardPreviewPage = ({ onConsultation }: DashboardPreviewPagePro
           </div>
         )}
 
-        {activeTab === 'training' && (
-          <div className={style.panel} role="tabpanel">
-            <h2>Чему учить сотрудников</h2>
-            <div className={style.tableHead}>
-              <span>Тема</span>
-              <span>Сколько человек ошиблось</span>
-              <span>Процентное соотношение от всех прошедших тестирование</span>
-            </div>
-            {TRAINING_TOPICS.map((row) => (
-              <div key={row.topic} className={style.tableRow}>
-                <span className={style.tableRow__topic}>{row.topic}</span>
-                <span className={style.tableRow__count}>
-                  {row.count}
-                  <span className={style.tableRow__countLabel}> ошибок</span>
-                </span>
-                <div className={style.tableRow__barTrack}>
-                  <div className={style.tableRow__barFill} style={{ width: `${row.percent}%` }} />
-                  <span className={style.tableRow__percent}>{row.percent}</span>
-                </div>
-              </div>
-            ))}
-            <p className={style.footnote}>
-              Вы сможете подобрать актуальные образовательные программы по цифровой грамотности.
-            </p>
-          </div>
-        )}
+        {activeTab === 'training' && <TrainingTopicsPanel />}
 
         <div className={style.actions}>
           <Button onClick={openWizard}>Подключить платформу</Button>

@@ -1,7 +1,8 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Button } from '@/components/ui/Button'
 import { MOCK_LK_TABS, PLATFORM_FEATURES } from '@/data/landingData'
 import { navigateToPanel } from '@/helpers/navigation'
+import { preloadPanelVideo } from '@/helpers/preloadPanelVideo'
 import { fixHangingParticles } from '@/helpers/typograph'
 import { SectionTitle } from '@/components/ui/SectionTitle'
 import style from '@/pages/landingPage/landingPage.module.scss'
@@ -16,13 +17,31 @@ const BAR_PRESETS = [
 
 export const FeaturesSection = () => {
   const [activeTab, setActiveTab] = useState(MOCK_LK_TABS[0].id)
+  const sectionRef = useRef<HTMLElement>(null)
   const activeContent = MOCK_LK_TABS.find((tab) => tab.id === activeTab) ?? MOCK_LK_TABS[0]
 
   const tabIndex = MOCK_LK_TABS.findIndex((tab) => tab.id === activeTab)
   const bars = BAR_PRESETS[tabIndex >= 0 ? tabIndex % BAR_PRESETS.length : 0]
 
+  useEffect(() => {
+    const node = sectionRef.current
+    if (!node) return
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry?.isIntersecting) return
+        preloadPanelVideo()
+        observer.disconnect()
+      },
+      { rootMargin: '200px' },
+    )
+
+    observer.observe(node)
+    return () => observer.disconnect()
+  }, [])
+
   return (
-    <section className="section">
+    <section ref={sectionRef} className="section">
       <div className="container">
         <SectionTitle title="Возможности платформы" />
         <div className={style.features__grid}>
@@ -58,7 +77,11 @@ export const FeaturesSection = () => {
               ))}
             </div>
           </div>
-          <div className={style.features__mockCta}>
+          <div
+            className={style.features__mockCta}
+            onMouseEnter={preloadPanelVideo}
+            onFocusCapture={preloadPanelVideo}
+          >
             <Button variant="secondary" onClick={navigateToPanel}>
               Перейти к панели управления
             </Button>

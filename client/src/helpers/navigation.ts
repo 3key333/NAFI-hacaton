@@ -1,3 +1,5 @@
+import { preloadPanelVideo } from '@/helpers/preloadPanelVideo'
+
 const PANEL_PATH = '/panel'
 
 const normalizePath = (pathname: string) =>
@@ -11,6 +13,7 @@ const notifyRouteChange = () => {
 }
 
 export const navigateToPanel = () => {
+  preloadPanelVideo()
   if (isPanelRoute()) return
   window.history.pushState(null, '', PANEL_PATH)
   notifyRouteChange()

@@ -1,6 +1,5 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
 import {
-  AUDIENCE_RECOMMENDED_OPTIONS,
   DEFAULT_CONNECTION_CONFIG,
   DEFAULT_CONNECTION_FORM,
   DEFAULT_PAYER_TYPE,
@@ -18,13 +17,6 @@ import type {
   PaymentMethod,
   WizardStep,
 } from '@/types'
-
-const optionsFromRecommended = (keys: (keyof ConnectionOptions)[]): ConnectionOptions => ({
-  certificates: keys.includes('certificates'),
-  hints: keys.includes('hints'),
-  recommendations: keys.includes('recommendations'),
-  api: keys.includes('api'),
-})
 
 interface ConnectionState {
   config: ConnectionConfig
@@ -64,7 +56,6 @@ const connectionSlice = createSlice({
     },
     setAudienceWithRecommendations(state, action: PayloadAction<AudienceType>) {
       state.config.audience = action.payload
-      state.config.options = optionsFromRecommended(AUDIENCE_RECOMMENDED_OPTIONS[action.payload])
     },
     toggleOption(state, action: PayloadAction<keyof ConnectionOptions>) {
       const key = action.payload
