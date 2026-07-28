@@ -266,6 +266,11 @@
     background: rgba(255, 196, 30, 0.35);
     overflow: hidden;
     border: 1px solid transparent;
+
+    @media (max-width: 535px) {
+      height: 50px;
+      border-radius: 16px;
+    }
   }
 
   &__fill {
@@ -274,6 +279,10 @@
     border-radius: 20px;
     background: var(--color-primary);
     transition: width 1.4s cubic-bezier(0.16, 1, 0.3, 1);
+
+    @media (max-width: 535px) {
+      border-radius: 16px;
+    }
   }
 
   &__title {
@@ -290,6 +299,16 @@
     overflow: hidden;
     text-overflow: ellipsis;
     pointer-events: none;
+
+    @media (max-width: 535px) {
+      font-size: 12px;
+      line-height: 1.2;
+      white-space: normal;
+      text-overflow: unset;
+      display: flex;
+      align-items: center;
+      padding: 0 12px;
+    }
   }
 
   &__value {
