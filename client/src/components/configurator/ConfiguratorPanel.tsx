@@ -103,7 +103,11 @@ export const ConfiguratorPanel = ({ compact = false, showBase = false }: Configu
                 checked={config.options[opt.key]}
                 onChange={() => toggleOption(opt.key)}
               />
-              <span>{opt.label}</span>
+              <span className={style.panel__optionText}>
+                <span className={style.panel__optionLabel}>{opt.label}</span>
+                {' '}
+                <span className={style.panel__optionPrice}>({formatPrice(opt.price)})</span>
+              </span>
             </label>
           ))}
         </div>
@@ -127,7 +131,7 @@ export const ConfiguratorPanel = ({ compact = false, showBase = false }: Configu
             <strong>{formatPrice(price.total)}</strong>
           </div>
           <Button className={style.panel__cta} onClick={openWizard}>
-            Рассчитать стоимость
+            Перейти к подключению
           </Button>
         </>
       )}
