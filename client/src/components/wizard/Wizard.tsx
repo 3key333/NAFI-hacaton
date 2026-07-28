@@ -175,9 +175,27 @@ export const Wizard = ({ onConsultation }: WizardProps) => {
       </ul>
 
       <div className={style.sidebarPrice}>
-        <span>Итого · с НДС</span>
-        <strong>{formatPrice(price.total)}</strong>
-        <p>{config.count} тестируемых</p>
+        <p className={style.sidebarPrice__title}>ВАШ РАСЧЕТ</p>
+        <ul className={style.sidebarPrice__breakdown}>
+          <li>
+            <span>Базовый тариф · {config.count} чел.</span>
+            <span>{formatPrice(price.licenseTotal)}</span>
+          </li>
+          {price.options.length > 0 && (
+            <li>
+              <span>Дополнительные опции</span>
+              <span>{formatPrice(price.subtotalExVat - price.licenseTotal)}</span>
+            </li>
+          )}
+          <li>
+            <span>НДС, 5%</span>
+            <span>{formatPrice(price.vatAmount)}</span>
+          </li>
+          <li className={style.sidebarPrice__total}>
+            <span>Итого с НДС</span>
+            <strong>{formatPrice(price.total)}</strong>
+          </li>
+        </ul>
       </div>
     </div>
   )
