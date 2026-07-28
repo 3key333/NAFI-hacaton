@@ -192,7 +192,7 @@ export const Wizard = ({ onConsultation }: WizardProps) => {
             <span>{formatPrice(price.vatAmount)}</span>
           </li>
           <li className={style.sidebarPrice__total}>
-            <span>Итого с НДС</span>
+            <span>Итого · с НДС</span>
             <strong>{formatPrice(price.total)}</strong>
           </li>
         </ul>
