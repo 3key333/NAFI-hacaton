@@ -10,31 +10,26 @@ import type {
 /** Единый источник данных по сегментам ЦА: короткие/длинные названия и рекомендуемые опции. */
 export const AUDIENCE_SEGMENTS: {
   id: AudienceType
-  label: string
   tabLabel: string
   recommendedOptions: (keyof ConnectionOptions)[]
 }[] = [
   {
     id: 'enterprise',
-    label: 'Крупный бизнес',
     tabLabel: 'Крупный бизнес (1000+)',
     recommendedOptions: ['api', 'certificates', 'recommendations'],
   },
   {
     id: 'medium',
-    label: 'Средний бизнес',
     tabLabel: 'Средний бизнес (150–1000)',
     recommendedOptions: ['recommendations', 'hints'],
   },
   {
     id: 'gov',
-    label: 'Госорганы',
     tabLabel: 'Госорганы',
     recommendedOptions: ['certificates', 'recommendations'],
   },
   {
     id: 'education',
-    label: 'Образование',
     tabLabel: 'Образование (вузы)',
     recommendedOptions: ['certificates', 'hints', 'recommendations'],
   },

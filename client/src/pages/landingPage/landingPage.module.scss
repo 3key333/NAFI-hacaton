@@ -51,46 +51,6 @@
     }
   }
 
-  &__chips {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-bottom: 16px;
-  }
-
-  &__chip {
-    appearance: none;
-    flex-shrink: 0;
-    padding: 4px 12px;
-    border-radius: 20px;
-    font-size: 12px;
-    border: 1px solid rgba(255, 255, 255, 0.28);
-    background: rgba(0, 0, 0, 0.35);
-    color: rgba(255, 255, 255, 0.78);
-    cursor: pointer;
-    transition: background 0.2s, border-color 0.2s, color 0.2s;
-    line-height: 1.4;
-    white-space: nowrap;
-    backdrop-filter: blur(6px);
-
-    @media (max-width: 480px) {
-      padding: 4px 10px;
-      font-size: 11px;
-    }
-
-    &:hover {
-      border-color: #ffc41e;
-      color: #ffffff;
-    }
-
-    &--active {
-      background: rgba(255, 196, 30, 0.18);
-      border-color: #ffc41e;
-      color: #ffffff;
-      font-weight: 600;
-    }
-  }
-
   &__subtitle {
     font-size: 16px;
     color: rgba(255, 255, 255, 0.82);
