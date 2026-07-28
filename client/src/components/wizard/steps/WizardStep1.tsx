@@ -10,7 +10,7 @@ interface WizardStep1Props {
 }
 
 export const WizardStep1 = ({ config, price }: WizardStep1Props) => {
-  const [isBreakdownOpen, setIsBreakdownOpen] = useState(false)
+  const [isBreakdownOpen, setIsBreakdownOpen] = useState(true)
 
   return (
     <div className={style.step}>

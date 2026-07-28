@@ -328,6 +328,7 @@
 .priceBreakdownToggle {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 12px;
   width: 100%;
   padding: 14px 16px;
@@ -342,20 +343,23 @@
     border-color: var(--color-dark);
     background: var(--color-bg);
   }
+}
 
-  &__title {
-    flex: 1;
-    font-size: 15px;
-    font-weight: 600;
-    color: var(--color-dark);
-  }
+.priceBreakdownToggle__title {
+  flex: 1;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--color-dark);
+}
 
-  &__arrow {
-    width: 12px;
-    height: 12px;
-    flex-shrink: 0;
-    object-fit: contain;
-  }
+.priceBreakdownToggle__arrow {
+  width: 14px;
+  height: 14px;
+  min-width: 14px;
+  min-height: 14px;
+  flex-shrink: 0;
+  display: block;
+  object-fit: contain;
 }
 
 .priceBreakdown {
