@@ -25,7 +25,7 @@ export const StepsSection = () => {
             </div>
           ))}
         </div>
-        <p className={style.steps__note}>Подключение — моментальное · Внедрение — за 1–2 дня</p>
+        <p className={style.steps__note}>Подключение - моментальное <br /> Внедрение - за 1-2 дня</p>
       </div>
     </section>
   )

@@ -21,7 +21,7 @@ export const AUDIENCE_SEGMENTS: {
   {
     id: 'medium',
     tabLabel: 'Средний бизнес (150–1000)',
-    recommendedOptions: ['recommendations', 'hints'],
+    recommendedOptions: ['hints', 'recommendations'],
   },
   {
     id: 'gov',
