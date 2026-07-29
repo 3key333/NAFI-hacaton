@@ -48,7 +48,7 @@ export const AudienceSection = ({ onConsultation }: AudienceSectionProps) => {
           </div>
 
           <div>
-            <h4>Что получите</h4>
+            <h4>Что получаете</h4>
             <ul>{audience.benefits.map((b) => <li key={b}>{b}</li>)}</ul>
           </div>
         </div>
