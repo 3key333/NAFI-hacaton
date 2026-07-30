@@ -101,6 +101,17 @@
     display: flex;
     flex-wrap: wrap;
     gap: 12px;
+
+    button{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    button:first-of-type{
+      border: 2px var(--color-primary) solid;
+    }
+
   }
 
   &__actions &__btnSecondary {
