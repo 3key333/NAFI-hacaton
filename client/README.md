@@ -1,13 +1,12 @@
 # Цифровой гражданин — frontend
 
-Лендинг платформы НАФИ для оценки цифровых компетенций с конфигуратором подключения, 5-шаговым визардом оформления и демо-страницей панели управления.
+Лендинг платформы НАФИ для оценки цифровых компетенций с конфигуратором подключения, 5-шаговым визардом оформления и встроенным preview панели управления.
 
 ## Содержание
 
 - [Стек](#стек)
 - [Быстрый старт](#быстрый-старт)
 - [Архитектура](#архитектура)
-- [Маршрутизация](#маршрутизация)
 - [Пользовательские сценарии](#пользовательские-сценарии)
 - [Секции лендинга](#секции-лендинга)
 - [Демо-панель управления](#демо-панель-управления)
@@ -30,7 +29,7 @@
 | **Redux Toolkit** | Глобальное состояние конфигуратора и визарда |
 | **SCSS Modules** | Изолированные стили компонентов |
 
-Роутер (React Router и т.п.) не используется: переключение лендинг ↔ демо-панель — через `pathname` и History API.
+Роутер не используется: одна страница — лендинг.
 
 ## Быстрый старт
 
@@ -42,8 +41,6 @@ npm run dev
 
 Приложение откроется на `http://localhost:5173`.
 
-Демо-панель: `http://localhost:5173/panel`.
-
 ### Команды
 
 | Команда | Описание |
@@ -53,20 +50,16 @@ npm run dev
 | `npm run preview` | Локальный просмотр production-сборки |
 | `npm run lint` | ESLint |
 
-> В production для `/panel` нужен SPA-fallback (все пути → `index.html`), иначе прямой заход на URL отдаст 404.
-
 ## Архитектура
 
-Точка входа — `src/main.tsx`: Redux Provider оборачивает `Layout`. `Layout` по текущему pathname рендерит либо лендинг, либо демо-панель.
+Точка входа — `src/main.tsx`: Redux Provider оборачивает `Layout`. `Layout` рендерит лендинг.
 
 ```mermaid
 flowchart TB
   main[main.tsx] --> Provider[Redux Provider]
   Provider --> Layout[Layout]
   Layout --> Header
-  Layout --> Main{pathname}
-  Main -->|/| LandingPage
-  Main -->|/panel| DashboardPreviewPage
+  Layout --> LandingPage
   Layout --> Footer
   Layout --> StickyMobileCta
   Layout --> ConsultationModal
@@ -76,7 +69,7 @@ flowchart TB
   LandingSections --> Wizard
   LandingSections --> FeaturesSection
   LandingSections --> OtherSections[остальные секции]
-  FeaturesSection -->|navigateToPanel| DashboardPreviewPage
+  FeaturesSection --> DashboardPreview
 
   Wizard --> ConfiguratorPanel
   Wizard --> WizardSteps[WizardStep1–5]
@@ -95,19 +88,7 @@ flowchart TB
 1. **Конфигуратор** — параметры (`count`, `audience`, `options`) в Redux; используются в визарде, секции «Для кого» и расчёте цены.
 2. **Визард** — форма, способ оплаты, тип плательщика (на шаге оплаты) и шаг — в том же slice; ошибки валидации — локальный `useState` в `Wizard`.
 3. **Консультация и контакты** — локальный state в `ConsultationModal` и `ContactsSection`, не связаны с Redux.
-4. **Демо-панель** — локальный UI-state (вкладки, анимации, раскрытие компетенций), без Redux.
-
-## Маршрутизация
-
-Логика в `src/helpers/navigation.ts`:
-
-| Функция / константа | Назначение |
-|---------------------|------------|
-| `isPanelRoute()` | `true`, если pathname = `/panel` |
-| `navigateToPanel()` | `history.pushState` → `/panel` + событие `popstate` |
-| `navigateToHome()` | возврат на `/` + скролл вверх |
-
-`Layout` слушает `popstate` и переключает контент. Sticky CTA на демо-панели скрыт.
+4. **Демо-панель** — локальный UI-state внутри `FeaturesSection` (вкладки, раскрытие компетенций), без Redux.
 
 ## Пользовательские сценарии
 
@@ -125,11 +106,7 @@ flowchart TB
 
 ### Консультация
 
-Кнопки «Получить консультацию» (шапка, hero, визард, FAQ, CTA-баннер, «Для кого», демо-панель) открывают `ConsultationModal`. Поля: имя, фамилия, email, телефон, согласие. Отправка — имитация с задержкой 800 ms.
-
-### Демо-панель
-
-Кнопка «Перейти к панели управления» в `FeaturesSection` ведёт на `/panel`. Назад — «Вернуться на главную» или логотип/навигация в шапке.
+Кнопки «Получить консультацию» (шапка, hero, визард, FAQ, CTA-баннер, «Для кого») открывают `ConsultationModal`. Поля: имя, фамилия, email, телефон, согласие. Отправка — имитация с задержкой 800 ms.
 
 ## Секции лендинга
 
@@ -144,7 +121,7 @@ flowchart TB
 | 5 | `Wizard` | `#wizard` | Конфигуратор + 5-шаговый визард |
 | 6 | `WhyNafiSection` | — | Почему НАФИ |
 | 7 | `AudienceSection` | — | Сегменты ЦА, рекомендуемые опции |
-| 8 | `FeaturesSection` | — | Функционал + мини-дашборд + переход на `/panel` |
+| 8 | `FeaturesSection` | — | Функционал + встроенный preview панели (`DashboardPreview`) |
 | 9 | `CompetenciesSection` | — | 5 компетенций DigComp, flip-карточки, демо-вопросы |
 | 10 | `CasesSection` | `#cases` | Кейсы |
 | 11 | `FaqSection` | `#faq` | Частые вопросы + ссылка на консультацию |
@@ -155,15 +132,13 @@ flowchart TB
 
 ## Демо-панель управления
 
-Страница `DashboardPreviewPage` (`/panel`) — ознакомительный UI с демо-данными.
+Компонент `DashboardPreview` встроен в `FeaturesSection` — ознакомительный UI с демо-данными.
 
 | Вкладка | Содержание |
 |---------|------------|
-| Отчёт по компании | Индекс, анимированные полосы компетенций, раскрытие деталей |
+| Отчёт по компании | Индекс, полосы компетенций, раскрытие деталей |
 | Отчёт по сотруднику | Радар (среднее по компании + сотрудник), легенда |
 | Чему учить | Раскрывающиеся плашки: тема → ошибки / % / рекомендация |
-
-Фон — видео `public/hero-bg.mp4` + виньетка. CTA внизу: подключение и консультация.
 
 ## Визард подключения
 
@@ -253,7 +228,7 @@ Slice `connection` (`src/redux/slices/connectionSlice.ts`):
 | `setWizardStep` | Перейти на шаг |
 | `resetWizard` | Сбросить визард к начальному состоянию |
 
-Хук **`useConnection()`** — единая точка доступа. `openWizard()` прокручивает к `#wizard`; если визард на «Готово», сначала вызывает `resetWizard()`. С демо-панели перед открытием визарда выполняется возврат на лендинг.
+Хук **`useConnection()`** — единая точка доступа. `openWizard()` прокручивает к `#wizard`; если визард на «Готово», сначала вызывает `resetWizard()`.
 
 ## Что реализовано, а что mock
 
@@ -265,7 +240,7 @@ Slice `connection` (`src/redux/slices/connectionSlice.ts`):
 | Детализация стоимости | Открыта по умолчанию |
 | Расчёт стоимости | По тарифам НАФИ + НДС 5% |
 | Надбавки за опции | Упрощённый прототип |
-| Демо-панель `/panel` | Реальный UI, демо-данные |
+| Демо-панель в Features | Реальный UI, демо-данные |
 | Лицензионный договор | Mock-текст |
 | Оплата картой | Mock-форма |
 | Отправка форм (консультация, контакты) | Mock (задержка 800 ms) |
@@ -296,8 +271,6 @@ client/
 │   ├── data/
 │   │   └── landingData.ts       # Тексты и контент лендинга
 │   ├── helpers/
-│   │   ├── animateCount.ts      # Анимация чисел на демо-панели
-│   │   ├── navigation.ts        # /panel ↔ /
 │   │   ├── phoneFormat.ts       # Форматирование телефонов СНГ
 │   │   ├── priceCalculator.ts
 │   │   ├── scrollToSection.ts
@@ -305,7 +278,7 @@ client/
 │   │   └── validateForm.ts
 │   ├── layout/                  # Layout (Header + main + Footer)
 │   ├── pages/
-│   │   ├── dashboardPreview/    # Демо-панель управления
+│   │   ├── dashboardPreview/    # DashboardPreview (в FeaturesSection)
 │   │   └── landingPage/
 │   │       ├── sections/
 │   │       ├── LandingPage.tsx
@@ -333,7 +306,7 @@ client/
 | `HERO_BADGES`, `HERO_SCENARIOS` | Блок hero |
 | `TRUST_LOGOS`, `TRUST_STATS` | Блок доверия |
 | `BENEFITS`, `FAQ_ITEMS`, `CASES` | Секции |
-| `PLATFORM_FEATURES`, `MOCK_LK_TABS` | Блок возможностей + мини-дашборд |
+| `PLATFORM_FEATURES` | Карточки блока возможностей |
 | `COMPETENCIES` | 5 сфер компетенций (иконка, skills, report) |
 | `DEMO_QUESTIONS` | Примеры вопросов в `SampleTestModal` |
 | `AUDIENCE_TABS` | Вкладки «Для кого» (боли, выгоды, кейсы) |
@@ -401,7 +374,6 @@ client/
 2. Вынести base URL в `VITE_API_URL`.
 3. Заменить `setTimeout` в формах на `fetch` / axios с обработкой ошибок.
 4. Mock-текст договора в `WizardStep3` заменить на загрузку PDF или HTML с сервера.
-5. Для `/panel` настроить SPA-fallback на хостинге.
 
 ## Импорты (path aliases)
 
@@ -410,7 +382,7 @@ client/
 ```ts
 import { Button } from '@/components/ui/Button'
 import { useConnection } from '@/redux/hooks/useConnection'
-import { navigateToPanel } from '@/helpers/navigation'
+import { DashboardPreview } from '@/pages/dashboardPreview/DashboardPreview'
 ```
 
 Настроено в `vite.config.ts` и `tsconfig.app.json`.

@@ -81,7 +81,7 @@ export const validateConnectionForm = (
     }
   }
 
-  if (!form.consent) errors.consent = 'Необходимо согласие на обработку ПДн'
+  if (!form.consent) errors.consent = 'Необходимо согласие на обработку персональных данных'
 
   return errors
 }
@@ -95,7 +95,7 @@ export const validateContactForm = (form: ConnectionForm): FormErrors => {
   if (!form.comment.trim()) {
     errors.comment = 'Введите сообщение'
   }
-  if (!form.consent) errors.consent = 'Необходимо согласие на обработку ПДн'
+  if (!form.consent) errors.consent = 'Необходимо согласие на обработку персональных данных'
 
   return errors
 }

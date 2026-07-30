@@ -1,7 +1,6 @@
 import { useState, type MouseEvent } from 'react'
 import { Button } from '@/components/ui/Button'
 import { NAV_LINKS } from '@/data/landingData'
-import { isPanelRoute, navigateToHome } from '@/helpers/navigation'
 import { scrollToSection } from '@/helpers/scrollToSection'
 import { useConnection } from '@/redux/hooks/useConnection'
 import style from './header.module.scss'
@@ -16,23 +15,11 @@ export const Header = ({ onConsultation }: HeaderProps) => {
 
   const handleNav = (href: string) => {
     setMenuOpen(false)
-    const id = href.replace('#', '')
-
-    if (isPanelRoute()) {
-      navigateToHome()
-      requestAnimationFrame(() => scrollToSection(id))
-      return
-    }
-
-    scrollToSection(id)
+    scrollToSection(href.replace('#', ''))
   }
 
   const handleLogoClick = (e: MouseEvent) => {
     e.preventDefault()
-    if (isPanelRoute()) {
-      navigateToHome()
-      return
-    }
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
@@ -54,7 +41,12 @@ export const Header = ({ onConsultation }: HeaderProps) => {
 
         <div className={style.header__actions}>
           <Button variant="primary" onClick={openWizard}>Подключить платформу</Button>
-          <button className={style.header__burger} onClick={() => setMenuOpen(!menuOpen)} aria-label="Меню">
+          <button
+            className={`${style.header__burger} ${menuOpen ? style['header__burger--open'] : ''}`}
+            onClick={() => setMenuOpen(!menuOpen)}
+            aria-label={menuOpen ? 'Закрыть меню' : 'Открыть меню'}
+            aria-expanded={menuOpen}
+          >
             <span />
             <span />
             <span />
@@ -62,8 +54,11 @@ export const Header = ({ onConsultation }: HeaderProps) => {
         </div>
       </div>
 
-      {menuOpen && (
-        <div className={style.header__mobile}>
+      <div
+        className={`${style.header__mobile} ${menuOpen ? style['header__mobile--open'] : ''}`}
+        inert={!menuOpen ? true : undefined}
+      >
+        <div className={style.header__mobileInner}>
           {NAV_LINKS.map((link) => (
             <button key={link.href} onClick={() => handleNav(link.href)}>{link.label}</button>
           ))}
@@ -75,7 +70,7 @@ export const Header = ({ onConsultation }: HeaderProps) => {
             Получить консультацию
           </Button>
         </div>
-      )}
+      </div>
     </header>
   )
 }
