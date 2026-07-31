@@ -176,6 +176,13 @@ const radarPolygon = (values: number[]) =>
 
 const GRID_LEVELS = [20, 40, 60, 80, 100]
 
+const ERROR_RATE_LABEL = fixHangingParticles(
+  'Процентное соотношение от всех прошедших тестирование',
+)
+const TRAINING_FOOTNOTE = fixHangingParticles(
+  'Вы сможете подобрать актуальные образовательные программы по цифровой грамотности.',
+)
+
 const TrainingTopicsPanel = () => {
   const [expanded, setExpanded] = useState<Set<string>>(new Set())
 
@@ -217,7 +224,7 @@ const TrainingTopicsPanel = () => {
                 </button>
                 <div className={style.trainRow__topicBlock}>
                   <span className={style.trainRow__fieldLabel}>Тема</span>
-                  <span className={style.trainRow__topic}>{row.topic}</span>
+                  <span className={style.trainRow__topic}>{fixHangingParticles(row.topic)}</span>
                 </div>
               </div>
 
@@ -230,9 +237,7 @@ const TrainingTopicsPanel = () => {
                       <span className={style.trainRow__count}>{row.count}</span>
                     </div>
                     <div className={style.trainRow__metric}>
-                      <span className={style.trainRow__fieldLabel}>
-                        Процентное соотношение от всех прошедших тестирование
-                      </span>
+                      <span className={style.trainRow__fieldLabel}>{ERROR_RATE_LABEL}</span>
                       <span
                         className={style.trainRow__badge}
                         style={{ background: badgeColor }}
@@ -252,9 +257,7 @@ const TrainingTopicsPanel = () => {
           )
         })}
       </div>
-      <p className={style.footnote}>
-        Вы сможете подобрать актуальные образовательные программы по цифровой грамотности.
-      </p>
+      <p className={style.footnote}>{TRAINING_FOOTNOTE}</p>
     </div>
   )
 }

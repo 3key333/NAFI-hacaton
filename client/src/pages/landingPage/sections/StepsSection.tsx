@@ -19,7 +19,7 @@ export const StepsSection = () => {
                 />
               )}
               <div className={style.steps__item}>
-                <span className={style.steps__num}>{i + 1}</span>
+                <span className={style.steps__num}><span>{i + 1}</span></span>
                 <span>{step}</span>
               </div>
             </div>
